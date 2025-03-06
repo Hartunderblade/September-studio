@@ -1,0 +1,17 @@
+@import "@/assets/styles/reset.css";
+//@import "@/assets/styles/mainPage.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+
+.container {
+  max-width: 1500px;
+  margin: 0 auto;
+}

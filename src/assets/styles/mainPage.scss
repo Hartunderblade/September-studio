@@ -1,0 +1,42 @@
+.navbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.logo__img {
+  width: 280px;
+}
+
+.links {
+  display: flex;
+  column-gap: 306px;
+
+  &-block {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.4rem;
+  }
+}
+
+.auth {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+
+  &__register {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #1b33b2;
+  }
+
+  &__login {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1b33b2;
+    border: 1px solid #1b33b2;
+    border-radius: 6px;
+    padding: 26px 48px;
+  }
+}
