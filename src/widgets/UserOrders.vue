@@ -90,7 +90,7 @@ const statusClass = (status) => {
     border: 1px solid #1b33b2;
     border-radius: 1rem;
     padding: 1rem;
-    width: 319px;
+    width: 312px;
     height: 257px;
     background-color: #ffffff;
     display: flex;
