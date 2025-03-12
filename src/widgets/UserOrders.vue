@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import ButtonAddOrder from "@/widgets/ButtonAddOrder.vue";
+import CreateOrderModal from "@/features/modals/CreateOrder.vue";
+
+const isModalOpen = ref(false);
 
 const orders = ref([
   { id: 1, title: 'Бриф на лого и фирменный стиль', status: 'Новое' },
@@ -34,7 +37,7 @@ const statusClass = (status) => {
       <button type="submit" @click="filter = 'Отменено'" :class="{ active: filter === 'Отменено' }">Отменено</button>
     </nav>
     <div class="orders">
-      <ButtonAddOrder/>
+      <ButtonAddOrder @click="isModalOpen = true" />
       <div v-for="order in filteredOrders" :key="order.id" class="order">
         <div class="order-item">
           <p class="order-item__title">{{ order.title }}</p>
@@ -46,6 +49,7 @@ const statusClass = (status) => {
         </div>
       </div>
     </div>
+    <CreateOrderModal :show="isModalOpen" @close="isModalOpen = false"/>
   </div>
 </template>
 
