@@ -29,7 +29,7 @@ import { ref } from 'vue';
   padding: 10px 0 10px 16px;
   max-width: 1864px;
   background-color: #ffffff;
-  margin-top: 1rem;
+  margin-top: 3rem;
   box-shadow: 9px 4px 20px 0 rgba(63, 63, 63, 0.12);
 
   &__avatar {

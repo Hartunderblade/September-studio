@@ -15,7 +15,7 @@ import { ref } from 'vue';
     border: 2px dashed #1b33b2;
     border-radius: 1rem;
     padding: 0 1rem;
-    max-width: 360px;
+    max-width: 350px;
     width: 100%;
     height: 290px;
     cursor: pointer;

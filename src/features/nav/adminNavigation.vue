@@ -8,9 +8,14 @@ import {RouterLink, RouterView} from "vue-router";
       <div class="logo">
         <img class="logo__img" src="@/assets/images/logo.svg" alt="logo" title="logo studio September">
       </div>
-        <RouterLink class="navbar__link" to="/user">Профиль</RouterLink>
+      <div style="display: flex; align-items: center; column-gap: 1.1rem">
+        <RouterLink class="navbar__link" to="/admin">Пользователи</RouterLink>
+        <RouterLink class="navbar__link" to="/admin/orders">Заявки</RouterLink>
+        <RouterLink class="navbar__link" to="/admin/reviews">Отзывы</RouterLink>
+        <RouterLink class="navbar__link" to="/admin/feedback">Связь</RouterLink>
+      </div>
       <div class="user" style="">
-        <p class="user__name">Пользователь</p>
+        <p class="user__name">Админ</p>
         <button type="submit" class="user__logout">Выйти <img src="@/assets/icons/arrow-logout.svg"></button>
       </div>
     </nav>
@@ -28,7 +33,7 @@ import {RouterLink, RouterView} from "vue-router";
 
   &__link {
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 }
 

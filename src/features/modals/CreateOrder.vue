@@ -1,6 +1,9 @@
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue';
 import ProfileTitleModal from "@/shared/ui/ProfileTitleModal.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   show: Boolean,
@@ -14,13 +17,13 @@ const emit = defineEmits(["close"]);
   <div v-if="show" class="modal-owerlay" @click.self="emit('close')">
     <div class="modal">
       <ProfileTitleModal  title="Выберите и заполните бриф" description="Заполнение брифа позволит определить цели и задачи сайта, рассчитать
-      сроки и стоимость разработки, а так же сократит значительное количество вопросов
-      и поможет перейти к более детальному обсуждению" />
+      сроки и стоимость разработки, а так же сократит значительное количество вопросов
+      и поможет перейти к более детальному обсуждению" />
       <button @click="emit('close')" class="modal__close"><img src="@/assets/icons/close-modal.svg" alt="Закрыть"></button>
       <div class="modal-buttons">
-        <button>бриф на дизайн сайта<img src="@/assets/icons/arrow-modal.png"></button>
-        <button>бриф на лого и фирменный стиль<img src="@/assets/icons/arrow-modal.png"></button>
-        <button>Бриф на доработку сайта<img src="@/assets/icons/arrow-modal.png"></button>
+        <button @click="router.push(`/user/briefOne`)">бриф на дизайн сайта<img src="@/assets/icons/arrow-modal.png"></button>
+        <button @click="router.push(`/user/briefTwo`)">бриф на лого и фирменный стиль<img src="@/assets/icons/arrow-modal.png"></button>
+        <button @click="router.push(`/user/BriefThree`)">Бриф на доработку сайта<img src="@/assets/icons/arrow-modal.png"></button>
       </div>
     </div>
   </div>

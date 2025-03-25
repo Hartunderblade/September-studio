@@ -17,6 +17,13 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.4rem;
+
+    &__link {
+      &:hover {
+        text-decoration: underline;
+        transition: 0.8s;
+      }
+    }
   }
 }
 
@@ -29,6 +36,11 @@
     font-weight: 500;
     font-size: 1rem;
     color: #1b33b2;
+
+    &:hover {
+      text-decoration: underline;
+      transition: 0.8s;
+    }
   }
 
   &__login {
@@ -38,5 +50,11 @@
     border: 1px solid #1b33b2;
     border-radius: 6px;
     padding: 26px 48px;
+
+    &:hover {
+      background-color: #1B33B2;
+      color: #ffffff;
+      transition: 0.8s;
+    }
   }
 }
