@@ -149,4 +149,10 @@ button {
 .next {
   right: 10px;
 }
+
+@media (max-width: 320px) {
+  .step {
+    overflow: hidden;
+  }
+}
 </style>

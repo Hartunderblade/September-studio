@@ -71,6 +71,7 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
     display: flex;
     align-items: start;
     column-gap: 2rem;
+    flex-wrap: wrap;
     img {
       width: 60px;
       height: 60px;
@@ -107,10 +108,38 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 
   @media (max-width: 320px) {
     .content {
-      margin-top: 0;
-      margin-left: 0;
-      max-width: 1096px;
-      width: 100%;
+      margin-top: 10rem;
+      //margin-left: 0;
+      //max-width: 1096px;
+      //width: 100%;
+    }
+
+    .items {
+      row-gap: 1rem;
+    }
+
+    .item {
+      display: flex;
+      align-items: start;
+      column-gap: 2rem;
+      text-align: left;
+      img {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      &-info {
+        &__title {
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+
+        &__desc {
+          font-size: 12px;
+          margin-bottom: 0.4rem;
+        }
+
+      }
     }
   }
 </style>

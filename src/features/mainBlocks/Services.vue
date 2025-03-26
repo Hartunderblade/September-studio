@@ -142,4 +142,51 @@ const closeModal = () => {
       width: 100%;
     }
   }
+
+  @media (max-width: 320px) {
+    .content {
+      margin-top: 10rem;
+    }
+
+    .items {
+      gap: 1rem;
+      text-align: start;
+    }
+
+    .item {
+      padding: 1rem;
+      border-radius: 0.2rem;
+      max-width: 297px;
+
+      img {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      &__title {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      &__desc {
+        font-size: 12px;
+        max-width: 290px;
+        margin-top: 1rem;
+      }
+
+      &__price {
+        font-size: 22px;
+        margin-top: 22px;
+      }
+
+      &__button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-top: 26px;
+        text-align: start;
+      }
+    }
+  }
 </style>

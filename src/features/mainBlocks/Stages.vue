@@ -99,4 +99,5 @@ const slides = ref([
     margin-top: 1rem;
   }
 }
+
 </style>

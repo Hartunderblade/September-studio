@@ -60,8 +60,8 @@ const props = defineProps( {
   @media (max-width: 320px) {
     .title {
       //height: 98px;
-      max-width: 223px;
-      width: 100%;
+      //max-width: 223px;
+      //width: 100%;
       position: initial;
       text-align: center;
       height: 0;

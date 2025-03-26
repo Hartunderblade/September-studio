@@ -7,7 +7,7 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
     <MainPageTitle titleTop="О веб-" titleBottom="студии"/>
     <div class="content">
       <p class="content__description"><span style="font-weight: 500; text-transform: uppercase;">September</span> — это команда талантливых дизайнеров, разработчиков и маркетологов, объединенных общим стремлением к совершенству</p>
-      <div style="display: flex; flex-wrap: wrap; column-gap: 86px; align-items: start; margin-top: 4rem;">
+      <div class="block">
         <div class="benefits">
           <div class="benefit">
             <p class="benefit__number">00</p>
@@ -26,7 +26,7 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
             <p class="benefit__text">место в топ-50 рф более чем по 22 срезам</p>
           </div>
         </div>
-        <img style="max-width: 736px; max-height: 647px;" src="@/assets/images/about.jpg" alt="О нас">
+        <img class="about-img" style="max-width: 736px; max-height: 647px;" src="@/assets/images/about.jpg" alt="О нас">
       </div>
     </div>
   </div>
@@ -72,6 +72,14 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
     }
   }
 
+  .block {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 86px;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
   @media (max-width: 780px) {
     .about {
       margin-top: 3rem;
@@ -102,7 +110,7 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
     }
 
     .content {
-      margin-top: 0;
+      margin-top: 10rem;
       margin-left: 0;
 
       &__description {
@@ -112,6 +120,36 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
         max-width: 656px;
         margin-top: 2rem;
       }
+    }
+
+    .benefits {
+      width: 210px;
+      row-gap: 1rem;
+      align-items: center;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      column-gap: 1rem;
+      //width: 258px;
+
+      &__number {
+        font-size: 2rem;
+      }
+
+      &__text {
+        font-size: 14px;
+      }
+    }
+
+    .about-img {
+      width: 296px;
+      height: 257px;
+    }
+
+    .block {
+      align-items: center;
     }
   }
 

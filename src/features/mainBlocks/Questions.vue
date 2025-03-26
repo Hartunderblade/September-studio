@@ -130,8 +130,45 @@ console.log(toggleItem)
 
   @media (max-width: 320px) {
     .content {
-      margin-top: 10px;
+      margin-top: 5rem;
       margin-left: 0;
+    }
+
+    .preface {
+      display: flex;
+      align-items: center;
+      column-gap: 1rem;
+
+      h3 {
+        font-size: 12px;
+        max-width: 224px;
+      }
+
+      svg {
+        display: none;
+      }
+    }
+
+    .accordion {
+      row-gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid #adb3d6;
+      padding: 0 0 0 0;
+    }
+
+    .accordion-header {
+      font-size: 1rem;
+    }
+
+    .accordion-body {
+      padding: 0;
+
+      p {
+        font-size: 0.9rem;
+      }
     }
   }
 </style>

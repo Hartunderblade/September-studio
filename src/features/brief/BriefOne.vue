@@ -134,4 +134,71 @@ import BriefTitle from "@/shared/ui/BriefTitle.vue";
     transition: 0.3s;
   }
 }
+
+@media (max-width: 320px) {
+  .content {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 10px;
+  }
+  .form {
+    margin-top: 2rem;
+    h3 {
+      font-size: 20px;
+      margin-bottom: 26px;
+    }
+
+    &-items {
+      display: flex;
+      flex-direction: column;
+      row-gap: 2rem;
+
+      &__item {
+        border-bottom: 1px solid #1b33b2;
+        padding: 8px 0;
+        max-width: 1112px;
+        width: 100%;
+        background: #fff;
+        font-size: 12px;
+      }
+
+      &__checkbox {
+        display: flex;
+        align-items: center;
+        column-gap: 0.3rem;
+
+        input {
+          width: 14px;
+          height: 14px;
+          border-radius: 3px;
+        }
+
+        a {
+          font-size: 12px;
+          text-align: start;
+        }
+      }
+    }
+  }
+  .send {
+    border-radius: 6px;
+    padding: 1rem 0;
+    font-size: 18px;
+    margin-top: 26px;
+  }
+}
+
+@media (max-width: 780px) {
+  .content {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 10px;
+  }
+  .send {
+    border-radius: 6px;
+    padding: 1rem 0;
+    font-size: 18px;
+    margin-top: 26px;
+  }
+}
 </style>

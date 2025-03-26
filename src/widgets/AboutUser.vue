@@ -22,6 +22,7 @@ import { ref } from 'vue';
 <style scoped lang="scss">
 .user {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   column-gap: 2rem;
   border: 1px solid rgba(27, 51, 178, 0.2);
@@ -33,8 +34,8 @@ import { ref } from 'vue';
   box-shadow: 9px 4px 20px 0 rgba(63, 63, 63, 0.12);
 
   &__avatar {
-    width: 80px;
-    height: 80px;
+    max-width: 80px;
+    max-height: 80px;
     border-radius: 100%;
   }
 
@@ -53,6 +54,68 @@ import { ref } from 'vue';
       p {
         font-weight: 400;
         font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 780px) {
+  .user {
+    justify-content: center;
+    text-align: start;
+    column-gap: 2rem;
+    padding: 12px 16px;
+    margin-top: 2rem;
+
+    &__avatar {
+      margin-bottom: 1rem;
+    }
+
+    &__items {
+      display: flex;
+      align-items: center;
+      column-gap: 1.3rem;
+
+      &-item {
+        strong {
+          font-size: 12px;
+        }
+
+        p {
+          font-weight: 400;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .user {
+    justify-content: center;
+    text-align: start;
+    column-gap: 2rem;
+    padding: 12px 16px;
+    margin-top: 2rem;
+
+    &__avatar {
+      margin-bottom: 1rem;
+    }
+
+    &__items {
+      display: flex;
+      align-items: center;
+      column-gap: 1.3rem;
+
+      &-item {
+        strong {
+          font-size: 12px;
+        }
+
+        p {
+          font-weight: 400;
+          font-size: 1rem;
+        }
       }
     }
   }

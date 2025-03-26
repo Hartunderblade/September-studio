@@ -167,4 +167,67 @@ const statusClass = (status) => {
     font-weight: 600;
     font-size: 1rem;
   }
+
+
+@media (max-width: 320px) {
+  .content {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-top: 2rem;
+  }
+
+  nav {
+    border-bottom: 1px solid #a5a5a5;
+    max-width: 1982px;
+    margin-bottom: 1.4rem;
+    column-gap: 1rem;
+
+    button {
+      font-size: 1rem;
+      width: 5rem;
+    }
+  }
+
+  .order {
+    border-radius: 10px;
+    padding: 10px;
+    width: 312px;
+    height: 257px;
+    background-color: #ffffff;
+    text-align: start;
+
+    &-item {
+
+      &__title {
+        font-weight: 500;
+        font-size: 22px;
+        color: #1e1e1e;
+      }
+
+      &__description {
+        font-weight: 300;
+        font-size: 12px;
+        color: rgb(27 51 178);
+      }
+
+      &__status {
+        font-weight: 500;
+        font-size: 1rem;
+        color: #1b33b2;
+        border: 1px solid #1b33b2;
+        border-radius: 1rem;
+        padding: 0.4rem 1.6rem;
+      }
+
+      &__open {
+        color: #4a62e3;
+        border-bottom: 1px solid #4a62e3;
+        cursor: pointer;
+      }
+    }
+  }
+
+}
 </style>

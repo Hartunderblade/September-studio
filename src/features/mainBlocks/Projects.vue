@@ -125,5 +125,26 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
   }
 
   @media (max-width: 320px) {
+    .projects {
+      margin-top: 10rem;
+    }
+
+    .project {
+
+      &__cover {
+        width: 297px;
+        height: 199px;
+      }
+
+      &__title {
+        font-size: 24px;
+        margin-top: 10px;
+      }
+
+      &-hashtags {
+        column-gap: 1rem;
+        margin-top: 6px;
+      }
+    }
   }
 </style>

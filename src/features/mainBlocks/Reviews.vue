@@ -57,9 +57,9 @@ console.log(nextReview)
 
 <template>
   <div class="">
-    <div style="display: flex; justify-content: space-between;">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
       <MainPageTitle titleTop="отзывы" titleBottom=""/>
-      <button @click="openModal" style="font-size: 1.2rem; text-decoration: underline; color: #1B33B2; margin-bottom: 14rem;">Оставить отзыв</button>
+      <button class="link" @click="openModal">Оставить отзыв</button>
     </div>
 
     <div class="content">
@@ -88,7 +88,7 @@ console.log(nextReview)
           </button>
         </div>
       </div>
-      <img src="@/assets/images/main-star.svg">
+      <img class="star" src="@/assets/images/main-star.svg">
     </div>
     <ReviewModal v-if="isModalOpen" @close="closeModal"/>
   </div>
@@ -100,6 +100,13 @@ console.log(nextReview)
     display: flex;
     justify-content: space-between;
     align-items: end;
+  }
+
+  .link {
+    font-size: 1.2rem;
+    text-decoration: underline;
+    color: #1B33B2;
+    margin-bottom: 14rem;
   }
 
   .reviews {
@@ -138,6 +145,60 @@ console.log(nextReview)
         font-size: 26px;
         color: #1b33b2;
       }
+    }
+  }
+
+  @media (max-width: 320px) {
+    .content {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      text-align: start;
+    }
+
+    .reviews {
+      max-width: 296px;
+    }
+
+    .review {
+      &__name {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      &__comment {
+        font-size: 12px;
+        max-width: 296px;
+      }
+    }
+
+    .count {
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+      column-gap: 40px;
+
+      &-num {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+
+        p {
+          font-weight: 400;
+          font-size: 26px;
+          color: #1b33b2;
+        }
+      }
+    }
+
+    .star {
+      overflow: hidden;
+    }
+
+    .link {
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
     }
   }
 </style>

@@ -32,7 +32,7 @@ const closeModal = () => {
         <img src="@/assets/icons/vk.svg" alt="Vk" />
       </div>
       <div class="item-order">
-        <button @click="openModal" style="width: 300px; display: flex; flex-direction: column; row-gap: 1rem; align-items: center; font-weight: 400; font-size: 22px; text-align: center;">
+        <button @click="openModal" style="max-width: 300px; display: flex; flex-direction: column; row-gap: 1rem; flex-wrap: wrap; align-items: center; font-weight: 400; font-size: 22px; text-align: center;">
           <svg width="86" height="86" viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="84" height="84" rx="5" stroke="#1B33B2" stroke-width="2" />
             <path d="M56 43.0001L43 43.0001M43 43.0001L30 43.0001M43 43.0001L43 30M43 43.0001L43 56" stroke="#1B33B2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -137,7 +137,7 @@ const closeModal = () => {
     &__bottom {
       font-size: 60px;
       position: absolute;
-      top: 7rem;
+      top: 10rem;
       left: 0;
     }
 
@@ -146,5 +146,13 @@ const closeModal = () => {
   .socials {
     margin-top: 0;
   }
+
+  .item-order {
+     button {
+       font-size: 1rem;
+     }
+   }
 }
+
+
 </style>

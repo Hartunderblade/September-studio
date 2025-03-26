@@ -1,134 +1,196 @@
-<script setup>
-</script>
-
 <template>
   <footer class="footer">
-    <div class="container">
-      <div class="top">
-        <a class="top__email" href="#" title="Почта веб студии September">september@web.ru</a>
-        <button>Обудить проект <img src="@/assets/icons/arrow-footer.svg"></button>
+    <div class="footer__container">
+      <div class="footer__contacts">
+        <a href="tel:+71234567890" class="footer__phone">+7 (123) 456-78-90</a>
+        <address class="footer__address">
+          Россия, г. Астрахань,<br>
+          Восточная ул., д. 4
+        </address>
       </div>
-      <div class="large">
-        <div class="info">
-          <div class="info-contacts">
-            <p class="info-contacts__phone">+7 (123) 456-78-90</p>
-            <p class="info-contacts__address">Россия, г. Астрахань, Восточная ул., д. 4</p>
-          </div>
-          <div class="info-socials">
-            <p>Ⓒ 2025 September</p>
-            <div class="socials">
-              <img src="@/assets/icons/whatsApp.svg">
-              <img src="@/assets/icons/youtube.svg">
-              <img src="@/assets/icons/telegram.svg">
-            </div>
-          </div>
+
+      <div class="footer__nav">
+        <div class="footer__nav-column">
+          <h3 class="footer__nav-title">Компания</h3>
+          <ul class="footer__nav-list">
+            <li><a href="#" class="footer__nav-link">О нас</a></li>
+            <li><a href="#" class="footer__nav-link">Преимущества</a></li>
+            <li><a href="#" class="footer__nav-link">Реализованные проекты</a></li>
+            <li><a href="#" class="footer__nav-link">Отзывы</a></li>
+            <li><a href="#" class="footer__nav-link">Прайс</a></li>
+          </ul>
         </div>
-        <div style="max-width: 730px; width: 100%;" class="info">
-          <div style="display: flex; column-gap: 132px; height: 269px;">
-            <div>
-              <p style="font-size: 1.1rem; font-weight: 200; color: #A5A5A5;">Компания</p>
-              <div style="display: flex; flex-direction: column; row-gap: 0.3rem; margin-top:1rem;">
-                <a style="font-size: 1.1rem; font-weight: 200;" href="#">О нас</a>
-                <a style="font-size: 1.1rem; font-weight: 200;" href="#">Преимущества</a>
-                <a style="font-size: 1.1rem; font-weight: 200;" href="#">Реализованные проекты</a>
-                <a style="font-size: 1.1rem; font-weight: 200;" href="#">Отзывы</a>
-                <a style="font-size: 1.1rem; font-weight: 200;" href="#">Прайс</a>
-              </div>
-            </div>
-            <div>
-            <p style="font-size: 1.1rem; font-weight: 200; color: #A5A5A5;">Услуги</p>
-            <div style="display: flex; flex-direction: column; row-gap: 0.3rem; margin-top:1rem;">
-              <a style="font-size: 1.1rem; font-weight: 200;" href="#">Редизайн</a>
-              <a style="font-size: 1.1rem; font-weight: 200;" href="#">Лендинг</a>
-              <a style="font-size: 1.1rem; font-weight: 200;" href="#">Корпоративный сайт</a>
-            </div>
-          </div>
-          </div>
-          <div class="info-about">
-            <p style="font-size: 1.1rem; font-weight: 400;">Сайт разработала Корчунова Дарья</p>
-          </div>
+
+        <div class="footer__nav-column">
+          <h3 class="footer__nav-title">Услуги</h3>
+          <ul class="footer__nav-list">
+            <li><a href="#" class="footer__nav-link">Радизайн</a></li>
+            <li><a href="#" class="footer__nav-link">Лендинг</a></li>
+            <li><a href="#" class="footer__nav-link">Корпоративный сайт</a></li>
+          </ul>
         </div>
       </div>
-      <div style="margin-top: 2rem;" class="bottom">
-        <img style="width: 100%" src="@/assets/images/logo-2.png">
-      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2024 September</p>
+      <p class="footer__developer">Сайт разработала Корчунова Дарья</p>
     </div>
   </footer>
 </template>
 
-<style scoped lang="scss">
-  footer {
-    background-color: #1e1e1e;
-    color: #fff;
-    margin-top: 10rem;
+<style scoped>
+.footer {
+  background-color: #fff;
+  padding: 60px 0 30px;
+  color: #1E1E1E;
+  font-family: 'Arial', sans-serif;
+}
+
+.footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer__contacts {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer__phone {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1E1E1E;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.3s;
+}
+
+.footer__phone:hover {
+  color: #1B33B2;
+}
+
+.footer__address {
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.footer__nav {
+  display: flex;
+  gap: 80px;
+  flex: 2;
+}
+
+.footer__nav-column {
+  min-width: 150px;
+}
+
+.footer__nav-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1E1E1E;
+}
+
+.footer__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer__nav-link {
+  display: block;
+  color: #1E1E1E;
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: color 0.3s;
+}
+
+.footer__nav-link:hover {
+  color: #1B33B2;
+}
+
+.footer__bottom {
+  max-width: 1200px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(30, 30, 30, 0.1);
+  padding-top: 20px;
+}
+
+.footer__copyright,
+.footer__developer {
+  font-size: 14px;
+  color: rgba(30, 30, 30, 0.5);
+}
+
+/* Адаптация для 780px */
+@media (max-width: 780px) {
+  .footer {
+    padding: 40px 0 20px;
   }
 
-  .container {
-    color: #ffffff;
-  }
-
-  .top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem 0;
-    border-bottom: 1px solid #ffffff;
-
-    &__email {
-      font-size: 1rem;
-      font-weight: lighter;
-    }
-
-    button {
-      display: flex;
-      align-items: center;
-      column-gap: 0.6rem;
-      cursor: pointer;
-    }
-  }
-
-  .large {
-    display: flex;
-    justify-content: space-between;
-    padding: 4rem 0;
-    border-bottom: 1px solid #ffffff;
-  }
-
-  .info {
-    display: flex;
+  .footer__container {
     flex-direction: column;
-    row-gap: 216px;
-    &-contacts {
-      &__phone {
-        font-weight: 500;
-        font-size: 64px;
-        text-transform: uppercase;
-      }
-
-      &__address {
-        font-weight: 400;
-        font-size: 4rem;
-        line-height: 110%;
-        color: #a5a5a5;
-        width: 608px;
-        margin-top: 2rem;
-      }
-    }
-
-    &-socials {
-      display: flex;
-      align-items: center;
-      column-gap: 2rem;
-      p {
-        font-weight: 500;
-        font-size: 1.6rem;
-      }
-
-      .socials {
-        display: flex;
-        align-items: center;
-        column-gap: 1rem;
-      }
-    }
+    gap: 30px;
   }
+
+  .footer__nav {
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer__phone {
+    font-size: 20px;
+  }
+
+  .footer__bottom {
+    margin-top: 40px;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Адаптация для 320px */
+@media (max-width: 320px) {
+  .footer {
+    padding: 30px 0 15px;
+  }
+
+  .footer__phone {
+    font-size: 18px;
+  }
+
+  .footer__nav {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer__nav-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .footer__nav-link {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .footer__bottom {
+    margin-top: 30px;
+  }
+
+  .footer__copyright,
+  .footer__developer {
+    font-size: 12px;
+  }
+}
 </style>

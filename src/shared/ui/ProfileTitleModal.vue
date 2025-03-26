@@ -31,4 +31,15 @@ const description = ref(props.description);
     color: #2b2b2b;
     //max-width: 500px;
   }
+
+  @media (max-width: 320px) {
+    .title {
+      font-size: 22px;
+      width: 200px;
+    }
+
+    .description {
+      display: none;
+    }
+  }
 </style>

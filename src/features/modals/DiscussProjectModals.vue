@@ -73,6 +73,7 @@ onUnmounted(enableScroll);
   border-radius: 1rem;
   display: flex;
   justify-content: space-between;
+  //flex-wrap: wrap;
   align-items: flex-start;
   overflow-y: auto;
   }
@@ -162,6 +163,104 @@ onUnmounted(enableScroll);
       background-color: #1b33b2;
       color: #fff;
       transition: 0.6s;
+    }
+  }
+}
+
+@media (max-width: 780px) {}
+
+@media (max-width: 320px) {
+  .modal {
+    border-radius: 6px;
+    padding: 12px;
+    max-width: 296px;
+  }
+
+  .info {
+    width: 100%;
+    margin-right: 0;
+    te
+    &__title {
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    &__desc {
+      font-weight: 300;
+      font-size: 12px;
+      color: #2b2b2b;
+      margin-top: 12px;
+
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: 100%;
+
+    &__input {
+      font-weight: 300;
+      font-size: 1rem;
+      color: #474747;
+      border: 1px solid rgba(27, 51, 178, 0.4);
+      border-radius: 6px;
+      padding: 1rem 0 1rem 1rem;
+      max-width: 467px;
+      background: #fff;
+    }
+
+    &__textarea {
+      border: 1px solid rgba(27, 51, 178, 0.4);
+      border-radius: 6px;
+      padding: 16px 0 120px 16px;
+      max-width: 467px;
+      background: #fff;
+      font-weight: 300;
+      font-size: 16px;
+      color: #474747;
+    }
+
+    &__checkbox {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+      margin-top: 1rem;
+
+      &-input {
+        border: 1px solid #1b33b2;
+        border-radius: 6px;
+        width: 18px;
+        height: 18px;
+      }
+
+      p {
+        font-weight: 300;
+        font-size: 1rem;
+
+        a {
+          font-weight: 400;
+          color: #1b33b2;
+        }
+      }
+    }
+
+    &__send {
+      border: 1px solid #1b33b2;
+      border-radius: 6px;
+      padding: 22px 0;
+      max-width: 467px;
+      font-weight: 500;
+      font-size: 18px;
+      color: #1b33b2;
+      margin-top: 1rem;
+
+      &:hover {
+        background-color: #1b33b2;
+        color: #fff;
+        transition: 0.6s;
+      }
     }
   }
 }
