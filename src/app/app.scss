@@ -1,0 +1,40 @@
+@import "@/assets/styles/reset.css";
+//@import "@/assets/styles/mainPage.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  box-sizing: border-box;
+  height: 100%;
+  background-image: url("@/assets/images/background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.container {
+  max-width: 1864px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+
+@media (max-width: 780px) {
+  .container {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 320px) {
+  .container {
+    max-width: 296px;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+  }
+}
