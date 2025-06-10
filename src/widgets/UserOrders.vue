@@ -1,31 +1,51 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
 import ButtonAddOrder from "@/widgets/ButtonAddOrder.vue";
 import CreateOrderModal from "@/features/modals/CreateOrder.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const isModalOpen = ref(false);
-
-const orders = ref([
-  { id: 1, title: 'Бриф на лого и фирменный стиль', status: 'Новое' },
-  { id: 2, title: 'Бриф на лого и фирменный стиль', status: 'Завершено' },
-  { id: 3, title: 'Бриф на лого и фирменный стиль', status: 'Отменено' }
-]);
-
+const orders = ref([]);
 const filter = ref('Все');
+
+const statusClass = (status) => {
+  return {
+    'Новое': 'status-new',
+    'В работе': 'status-work',
+    'Завершено': 'status-completed',
+    'Отменено': 'status-canceled'
+  }[status] || '';
+};
 
 const filteredOrders = computed(() => {
   if (filter.value === 'Все') return orders.value;
   return orders.value.filter(order => order.status === filter.value);
 });
 
-const statusClass = (status) => {
-  return {
-    'Новое': 'status-new',
-    'Завершено': 'status-completed',
-    'Отменено': 'status-canceled'
-  }[status] || '';
+const fetchOrders = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://localhost:3000/order/orders', {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`
+      }
+    });
+    orders.value = response.data;
+    console.log('>>> Получено имя:', response.data); // например
+    console.log('>>> Получено имя:', response.data.name); // например
+  } catch (err) {
+    console.error('Ошибка при загрузке заказов:', err);
+  }
 };
 
+
+
+onMounted(() => {
+  fetchOrders();
+});
 </script>
 
 <template>
@@ -33,19 +53,37 @@ const statusClass = (status) => {
     <nav>
       <button type="submit" @click="filter = 'Все'" :class="{ active: filter === 'Все' }" >Все</button>
       <button type="submit" @click="filter = 'Новое'" :class="{ active: filter === 'Новое' }">Новое</button>
+      <button type="submit" @click="filter = 'В работе'" :class="{ active: filter === 'В работе' }">В работе</button>
       <button type="submit" @click="filter = 'Завершено'" :class="{ active: filter === 'Завершено' }">Завершено</button>
       <button type="submit" @click="filter = 'Отменено'" :class="{ active: filter === 'Отменено' }">Отменено</button>
     </nav>
     <div class="orders">
       <ButtonAddOrder @click="isModalOpen = true" />
+
       <div v-for="order in filteredOrders" :key="order.id" class="order">
         <div class="order-item">
-          <p class="order-item__title">{{ order.title }}</p>
+          <p class="order-item__title">
+            {{
+              {
+                identity: 'Бриф на лого и фирменный стиль',
+                design: 'Бриф на дизайн сайта без разработки',
+                edit: 'Бриф на полную доработку сайта'
+              }[order.brief_type]
+            }}
+          </p>
           <span class="order-item__description">Бриф</span>
         </div>
         <div class="order-item status">
-          <button :class="statusClass(order.status)" class="order-item__status">{{ order.status }}</button>
-          <button type="submit" class="order-item__open">Перейти</button>
+          <p :class="['order-item__status', statusClass(order.status)]">
+            {{ order.status }}
+          </p>
+          <button
+              @click="router.push({ name: 'BriefView', params: { type: order.brief_type, id: order.brief_id }, query: { title: order.title } })"
+              type="button"
+              class="order-item__open"
+          >
+            Посмотреть
+          </button>
         </div>
       </div>
     </div>
@@ -54,6 +92,38 @@ const statusClass = (status) => {
 </template>
 
 <style scoped lang="scss">
+.status-new {
+  background-color: #e7f0ff;
+  color: #1b33b2;
+  border: 1px solid #1b33b2;
+}
+
+.status-work {
+  background-color: #fff6e5;
+  color: #c97c00;
+  border: 1px solid #c97c00;
+}
+
+.status-completed {
+  background-color: #e6ffed;
+  color: #2e8b57;
+  border: 1px solid #2e8b57;
+}
+
+.status-canceled {
+  background-color: #ffeaea;
+  color: #cc0000;
+  border: 1px solid #cc0000;
+}
+
+.order-item__status {
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 1rem;
+  padding: 0.8rem 1.6rem;
+  display: inline-block;      /* Чтобы занимал размер по содержимому */
+  user-select: none;          /* Чтобы нельзя было выделять, если нужно */
+}
 
 .content {
   padding: 2rem 1rem;
@@ -61,6 +131,7 @@ const statusClass = (status) => {
   box-shadow: 9px 4px 20px 0 rgba(63, 63, 63, 0.12);
   border-radius: 1rem;
   margin-top: 3rem;
+  background-color: #ffffff;
 }
 
   nav {
@@ -115,15 +186,6 @@ const statusClass = (status) => {
         color: rgb(27 51 178);
       }
 
-      &__status {
-        font-weight: 500;
-        font-size: 1rem;
-        color: #1b33b2;
-        border: 1px solid #1b33b2;
-        border-radius: 1rem;
-        padding: 0.4rem 1.6rem;
-      }
-
       &__open {
         color: #4a62e3;
         border-bottom: 1px solid #4a62e3;
@@ -138,36 +200,23 @@ const statusClass = (status) => {
     justify-content: space-between;
   }
 
-  .status-new {
-    background-color: rgba(27, 178, 37, 0.12);
-    border: 1px solid #1bb225;
-    border-radius: 16px;
-    padding: 12px 32px;
-    font-weight: 600;
-    font-size: 16px;
-    color: #1bb225;
-  }
+  @media (max-width: 780px) {
+    .order {
+      width: 100%;
+    }
 
-  .status-completed {
-    background-color: rgba(27, 51, 178, 0.12);
-    border: 1px solid #1b33b2;
-    border-radius: 16px;
-    padding: 12px 32px;
-    font-weight: 600;
-    font-size: 16px;
-    color: #1b33b2;
-  }
+    nav {
+      border-bottom: 1px solid #a5a5a5;
+      max-width: 1982px;
+      margin-bottom: 1.4rem;
+      column-gap: 1rem;
 
-  .status-canceled {
-    color: #b21b39;
-    background-color: rgba(178, 27, 57, 0.12);
-    border: 1px solid #b21b39;
-    border-radius: 1rem;
-    padding: 12px 32px;
-    font-weight: 600;
-    font-size: 1rem;
+      button {
+        font-size: 1rem;
+        width: 5rem;
+      }
+    }
   }
-
 
 @media (max-width: 320px) {
   .content {
@@ -185,7 +234,7 @@ const statusClass = (status) => {
     column-gap: 1rem;
 
     button {
-      font-size: 1rem;
+      font-size: 0.8rem;
       width: 5rem;
     }
   }
@@ -210,15 +259,6 @@ const statusClass = (status) => {
         font-weight: 300;
         font-size: 12px;
         color: rgb(27 51 178);
-      }
-
-      &__status {
-        font-weight: 500;
-        font-size: 1rem;
-        color: #1b33b2;
-        border: 1px solid #1b33b2;
-        border-radius: 1rem;
-        padding: 0.4rem 1.6rem;
       }
 
       &__open {

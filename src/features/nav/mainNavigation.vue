@@ -1,10 +1,28 @@
 <script setup>
 import '@/assets/styles/mainPage.scss';
 import {RouterLink, useRouter} from "vue-router";
-import {ref} from "vue";
+import { ref, nextTick } from "vue";
 
 const router = useRouter();
 const isMenuOpen = ref(false);
+
+function navigateToAnchor(anchor) {
+  isMenuOpen.value = false;
+  if (router.currentRoute.value.path !== '/') {
+    router.push({ path: '/', query: { anchor } });
+  } else {
+    scrollToAnchor(anchor);
+  }
+}
+
+function scrollToAnchor(anchor) {
+  nextTick(() => {
+    const el = document.getElementById(anchor);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+}
 </script>
 
 <template>
@@ -26,24 +44,20 @@ const isMenuOpen = ref(false);
   </button>
   <div :class="['links', { 'active': isMenuOpen }]" class="links">
     <div class="links-block">
-      <a class="links-block__link" href="#">О нас</a>
-      <a class="links-block__link" href="#">Проекты</a>
-      <a class="links-block__link" href="#">Услуги</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('about')">О нас</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('projects')">Проекты</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('services')">Услуги</a>
     </div>
     <div class="links-block">
-      <a class="links-block__link" href="#">Отзывы</a>
-      <a class="links-block__link" href="#">Контакты</a>
-      <a class="links-block__link" href="#">FAQ</a>
-      <a class="links-block__link" href="#">Бриф</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('questions')">Отзывы</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('contacts')">Контакты</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('faq')">FAQ</a>
+      <a class="links-block__link" @click.prevent="navigateToAnchor('brief')">Бриф</a>
     </div>
     <div class="links-block" v-if="isMenuOpen">
       <a style="color: #1B33B2;" @click="router.push('/registration')" class="links-block__link">Зарегистрироваться</a>
       <a style="color: #1B33B2;" @click="router.push('/login')" class="links-block__link">Войти</a>
     </div>
-<!--    <div class="auth links-block" v-if="isMenuOpen">-->
-<!--      <button @click="router.push('/registration')" class="auth__register">Зарегистрироваться</button>-->
-<!--      <button @click="router.push('/login')" class="auth__login">Войти</button>-->
-<!--    </div>-->
   </div>
   <div class="auth" v-if="!isMenuOpen">
     <button @click="router.push('/registration')" class="auth__register">Зарегистрироваться</button>
@@ -69,7 +83,7 @@ const isMenuOpen = ref(false);
 .burger-menu span {
   display: block;
   width: 25px;
-  height: 3px;
+  height: 50px;
   color: #ffffff;
 }
 
@@ -85,21 +99,9 @@ const isMenuOpen = ref(false);
     justify-content: center;
   }
 
-  .links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: white;
-    padding: 1rem;
-    z-index: 199;
-    text-align: start;
-  }
-
   .links.active {
     display: flex;
+    padding-top: 3rem;
   }
 
   .auth {
@@ -112,6 +114,21 @@ const isMenuOpen = ref(false);
     padding: 6px 0 6px 0;
     width: 100%;
     text-decoration: none;
+  }
+
+  .links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    //padding: 1rem;
+    z-index: 199;
+    text-align: start;
   }
 }
 
@@ -128,6 +145,8 @@ const isMenuOpen = ref(false);
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     background: white;
     padding: 1rem;

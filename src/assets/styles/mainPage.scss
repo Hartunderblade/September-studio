@@ -1,8 +1,8 @@
 .navbar {
   display: flex;
-  align-items: flex-start;
+  align-items: start;
   justify-content: space-between;
-  padding: 1rem 0;
+  padding: 2rem 0;
 }
 
 .logo__img {
@@ -56,5 +56,14 @@
       color: #ffffff;
       transition: 0.8s;
     }
+  }
+}
+
+@media (max-width: 780px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
   }
 }

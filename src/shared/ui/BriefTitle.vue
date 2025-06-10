@@ -26,7 +26,7 @@ const description = ref(props.description);
 
 <style scoped lang="scss">
 .text {
-  margin-top: 96px;
+  margin-top: 2rem;
 }
 .title {
   &-top {
@@ -64,6 +64,23 @@ const description = ref(props.description);
   flex-wrap: wrap;
   margin-left: 376px;
   margin-top: 86px;
+}
+
+@media (max-width: 780px) {
+  .description {
+    font-weight: 400;
+    font-size: 18px;
+    max-width: 760px;
+  }
+
+  .warning {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 162%;
+    span {
+      color: #b21b39; font-size: 24px; font-weight: 600;
+    }
+  }
 }
 
 @media (max-width: 320px) {

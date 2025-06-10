@@ -1,21 +1,42 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const user = ref(null);
+const errorMessage = ref('');
+
+onMounted(() => {
+  // Получаем токен и данные пользователя из localStorage
+  const token = localStorage.getItem('token');
+  const userData = JSON.parse(localStorage.getItem('user'));
+
+  if (!token || !userData) {
+    router.push('/login');  // Если токена нет, перенаправляем на страницу входа
+    return;
+  }
+
+  user.value = userData;  // Присваиваем данные пользователя
+});
 </script>
 
 <template>
-  <div class="user">
+  <div v-if="user" class="user">
     <img class="user__avatar" src="@/assets/images/bc-auth.png" alt="Аватар пользователя в профиле" title="Studio September аватар пользователя" />
     <div class="user__items">
       <div class="user__items-item">
         <strong>Имя:</strong>
-        <p>Иван Иванов</p>
+        <p>{{ user.name }}</p>
       </div>
       <div class="user__items-item">
         <strong>Почта:</strong>
-        <p>ivan@gmail.com</p>
+        <p>{{ user.email }}</p>
       </div>
     </div>
 
+  </div>
+  <div v-else class="loading">
+    <p>Загрузка...</p>
   </div>
 </template>
 

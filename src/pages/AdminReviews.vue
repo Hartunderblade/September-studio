@@ -1,5 +1,33 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import ButtonBackMain from "@/shared/ui/ButtonBackMain.vue";
+
+const reviews = ref([]);
+
+const fetchReviews = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/reviews/get');
+    reviews.value = response.data;
+  } catch (error) {
+    console.error('Ошибка при загрузке отзывов:', error);
+  }
+};
+
+const deleteReview = async (id) => {
+  const confirmed = confirm("Вы уверены, что хотите удалить отзыв?");
+  if (!confirmed) return;
+
+  try {
+    await axios.delete(`http://localhost:3000/reviews/${id}`);
+    reviews.value = reviews.value.filter(review => review.id !== id);
+  } catch (error) {
+    console.error('Ошибка при удалении отзыва:', error);
+    alert('Не удалось удалить отзыв');
+  }
+};
+
+onMounted(fetchReviews);
 </script>
 
 <template>
@@ -8,48 +36,14 @@ import ButtonBackMain from "@/shared/ui/ButtonBackMain.vue";
     <h2 class="admin__title">Все отзывы</h2>
     <div class="content">
       <div class="reviews">
-        <div class="review">
+        <div v-for="review in reviews" :key="review.id" class="review">
           <p class="review__name">
-            Юрий маркин
+            {{ review.name }}
           </p>
           <p class="review__description">
-            Недавно я обратился в студию September для редизайна своего сайта, который посвящен
-            транспортным перевозкам. Мы долго искали команду, которая могла бы не только обновить
-            внешний вид сайта, но и улучшить его функциональность. Мы решили внедрить стиль bento grid,
-            который, как мне казалось, будет идеальным решением для организации информации о наших
-            услугах и маршрутах.
+            {{ review.text }}
           </p>
-          <button class="review__button-delite">
-            Удалить
-          </button>
-        </div>
-        <div class="review">
-          <p class="review__name">
-            Юрий маркин
-          </p>
-          <p class="review__description">
-            Недавно я обратился в студию September для редизайна своего сайта, который посвящен
-            транспортным перевозкам. Мы долго искали команду, которая могла бы не только обновить
-            внешний вид сайта, но и улучшить его функциональность. Мы решили внедрить стиль bento grid,
-            который, как мне казалось, будет идеальным решением для организации информации о наших
-            услугах и маршрутах.
-          </p>
-          <button class="review__button-delite">
-            Удалить
-          </button>
-        </div>
-        <div class="review">
-          <p class="review__name">
-            Юрий маркин
-          </p>
-          <p class="review__description">
-            Недавно я обратился в студию September для редизайна своего сайта, который посвящен
-            транспортным перевозкам. Мы долго искали команду, которая могла бы не только обновить
-            внешний вид сайта, но и улучшить его функциональность. Мы решили внедрить стиль bento grid,
-            который, как мне казалось, будет идеальным решением для организации информации о наших
-            услугах и маршрутах.
-          </p>
-          <button class="review__button-delite">
+          <button @click="deleteReview(review.id)" class="review__button-delite">
             Удалить
           </button>
         </div>
@@ -62,6 +56,7 @@ import ButtonBackMain from "@/shared/ui/ButtonBackMain.vue";
 <style scoped lang="scss">
 .admin {
   margin-top: 3.7rem;
+  margin-bottom: 2rem;
   &__title {
     font-size: 2rem;
     font-weight: 600;

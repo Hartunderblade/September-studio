@@ -1,14 +1,57 @@
 <script setup>
 import '@/assets/styles/mainPage.scss';
 import {RouterLink, useRouter} from "vue-router";
-import {ref} from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
 const router = useRouter();
 const isMenuOpen = ref(false);
+
+const user = ref(null);
+const error = ref('');
+
+
+onMounted(async () => {
+  const token = localStorage.getItem('token')
+
+  if (!token) {
+    error.value = 'Вы не авторизованы. Перенаправление на вход...'
+    setTimeout(() => router.push('/login'), 2000)
+    return
+  }
+  try {
+    const response = await axios.get('http://localhost:3000/user/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    user.value = response.data
+  } catch (err) {
+    if (err.response && err.response.status === 401) {
+      error.value = 'Сессия истекла. Пожалуйста, войдите снова.'
+      localStorage.removeItem('token')
+      setTimeout(() => router.push('/login'), 2000)
+    } else {
+      error.value = 'Ошибка при получении профиля'
+    }
+    console.error(err);
+  }
+});
+
+// Функция выхода из профиля
+const logout = () => {
+  // Удаляем токен из localStorage
+  localStorage.removeItem("token");
+
+  // Перенаправляем пользователя на страницу входа
+  router.push("/");
+};
+
 </script>
 
 <template>
-  <nav class="navbar">
+  <nav v-if="user" class="navbar">
     <div class="logo">
       <img class="logo__img" src="@/assets/images/logo.svg" alt="logo" title="logo studio September">
     </div>
@@ -28,8 +71,8 @@ const isMenuOpen = ref(false);
     <div :class="['navbar-content', { 'mobile-menu': isMenuOpen }]">
       <RouterLink class="navbar__link" to="/user">Профиль</RouterLink>
       <div class="user">
-        <p class="user__name">Пользователь</p>
-        <button type="submit" class="user__logout">Выйти <img src="@/assets/icons/arrow-logout.svg"></button>
+        <p class="user__name">{{ user.name }}</p>
+        <button @click="logout" type="submit" class="user__logout">Выйти <img src="@/assets/icons/arrow-logout.svg"></button>
       </div>
     </div>
   </nav>

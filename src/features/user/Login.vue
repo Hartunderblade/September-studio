@@ -1,10 +1,65 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
+import axios from 'axios'
 
 const router = useRouter();
 const email = ref('');
 const password = ref('');
+const errorMessage = ref('');
+const isLoading = ref(false);
+
+// const login = async () => {
+//   errorMessage.value = '';
+//
+//   if (!email.value || !password.value) {
+//     errorMessage.value = "Введите почту и пароль";
+//     return;
+//   }
+//
+//   try {
+//     const response = await axios.post("http://localhost:3000/auth/login", {
+//       email: email.value,
+//       password: password.value
+//     });
+//
+//     localStorage.setItem('token', response.data.token);
+//     localStorage.setItem('user', JSON.stringify(response.data.user));
+//
+//     // Переход в профиль по ID
+//     router.push('/user');
+//
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     errorMessage.value = error.response?.data?.message || "Ошибка входа";
+//   }
+// };
+
+const login = async () => {
+  isLoading.value = true;
+  errorMessage.value = ''; // Очистить ошибку перед новым запросом
+  try {
+    const response = await axios.post('http://localhost:3000/auth/login', {
+      email: email.value,
+      password: password.value
+    });
+
+    // Сохраняем токен и информацию о пользователе в localStorage
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', JSON.stringify(response.data.user)); // Сохраняем данные пользователя
+
+    // Переход в зависимости от роли пользователя
+    if (response.data.user.email === 'admin123@gmail.com') {
+      router.push('/admin'); // Переход в админ-панель
+    } else {
+      router.push('/user'); // Переход в профиль обычного пользователя
+    }
+  } catch (error) {
+    errorMessage.value = error.response ? error.response.data.message : 'Ошибка сервера';
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -14,7 +69,7 @@ const password = ref('');
         <img src="@/assets/images/logo.svg" alt="Logo" class="auth-form__logo" />
         <h2 class="auth-form__title">Снова здравствуйте!</h2>
         <p class="auth-form__text">Чтобы продолжить войдите в свой профиль</p>
-        <form @submit.prevent="router.push('/')">
+        <form @submit.prevent="login">
           <input
               type="email"
               v-model="email"
@@ -29,6 +84,7 @@ const password = ref('');
               class="auth__input"
               required
           />
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
           <button type="submit" class="button">Войти</button>
         </form>
         <p class="auth-form__register">
@@ -175,7 +231,7 @@ const password = ref('');
   .auth-form {
     padding: 1.5rem;
     width: 100%;
-    max-width: 100%;
+    max-width: 90%;
   }
 }
 

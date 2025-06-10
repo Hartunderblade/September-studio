@@ -1,78 +1,185 @@
 <script setup>
-import { ref } from 'vue';
 import BriefTitle from "@/shared/ui/BriefTitle.vue";
+import { ref } from 'vue'
+import axios from 'axios'
+import {useRouter} from "vue-router";
+import ButtonGoBack from "@/shared/ui/ButtonGoBack.vue";
+
+const router = useRouter();
+
+const name = ref('');
+const phone = ref('');
+const email = ref('');
+const contact = ref('');
+
+const company = ref('');
+const info = ref('');
+const description = ref('');
+const website = ref('');
+const social = ref('');
+
+const competitors = ref('');
+const disadv = ref('');
+const links = ref('');
+
+const gender = ref('');
+const age = ref('');
+
+const budget = ref('');
+const date = ref('');
+const additional = ref('');
+
+const submitBrief = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    await axios.post(
+        'http://localhost:3000/brief/design', {
+          name: name.value,
+          phone: phone.value,
+          email: email.value,
+          contact: contact.value,
+          company: company.value,
+          info: info.value,
+          description: description.value,
+          website: website.value,
+          social: social.value,
+          competitors: competitors.value,
+          disadv: disadv.value,
+          links: links.value,
+          gender: gender.value,
+          age: age.value,
+          budget: budget.value,
+          date: date.value,
+          additional: additional.value,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${token}`
+          },
+        }
+    );
+    router.push("/user/thanks");
+  } catch (err) {
+    console.error(err);
+    alert("Ошибка при отправке брифа");
+  }
+};
+
 </script>
 
 <template>
   <div class="brief">
     <div class="one">
       <div class="header">
+        <ButtonGoBack/>
         <BriefTitle
-            titleTop="бриф на лого"
-            titleBottom="и фирменный стиль"
-            description="Благодарим, что нашли время заполнить бриф.
-            Помните, максимальноподробно заполненный бриф помогает
-            вам получить сайт (дизайн), которыйсоответствует
-            полностью вашим ожиданиям"/>
+            titleTop="бриф на дизайн"
+            titleBottom="сайта без разработки"
+            description="Благодарим, что нашли время заполнить бриф. Помните, максимально подробно заполненный бриф помогает вам получить сайт, который соответствует вашим ожиданиям."
+        />
       </div>
       <div class="content">
         <div class="form">
           <h3>КОНТАКТНАЯ ИНФОРМАЦИЯ</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Имя">
-            <input class="form-items__item" type="text" placeholder="+7 (999) 999-99-99">
-            <input class="form-items__item" type="text" placeholder="Почта">
-            <input class="form-items__item" type="text" placeholder="Способ связи">
+            <input v-model="name" class="form-items__item" type="text" placeholder="Имя" />
+            <input v-model="phone" class="form-items__item" type="tel" placeholder="+7 (999) 999-99-99" />
+            <input v-model="email" class="form-items__item" type="email" placeholder="Почта" />
+            <input v-model="contact" class="form-items__item" type="text" placeholder="Способ связи" />
           </div>
         </div>
+
         <div class="form">
           <h3>О ПРОДУКТЕ И КОМПАНИИ</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Название компании*">
-            <input class="form-items__item" type="text" placeholder="Краткая информация о компании*">
-            <input class="form-items__item" type="text" placeholder="Описание продукта или услуги*">
-            <input class="form-items__item" type="text" placeholder="Адрес сайта">
-            <input class="form-items__item" type="text" placeholder="Социальные сети">
+            <input v-model="company" class="form-items__item" type="text" placeholder="Название компании*" required />
+            <input v-model="info" class="form-items__item" type="text" placeholder="Краткая информация о компании*" required />
+            <input v-model="description" class="form-items__item" type="text" placeholder="Описание продукта или услуги*" required />
+            <input v-model="website" class="form-items__item" type="url" placeholder="Адрес сайта"  />
+            <input v-model="social" class="form-items__item" type="text" placeholder="Социальные сети" />
           </div>
         </div>
+
         <div class="form">
           <h3>опишите конкурентов</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Преимущества*">
-            <input class="form-items__item" type="text" placeholder="Недостатки*">
-            <input class="form-items__item" type="text" placeholder="Ссылки сайтов конкурентов">
+            <input v-model="competitors" class="form-items__item" type="text" placeholder="Преимущества*" required />
+            <input v-model="disadv" class="form-items__item" type="text" placeholder="Недостатки*" required />
+            <input v-model="links" class="form-items__item" type="text" placeholder="Ссылки сайтов конкурентов" />
           </div>
         </div>
+
         <div class="form">
           <h3>целевая аудитория</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Пол">
-            <input class="form-items__item" type="text" placeholder="Возраст">
+            <input v-model="gender" class="form-items__item" type="text" placeholder="Пол" />
+            <input v-model="age" class="form-items__item" type="number" placeholder="Возраст" />
           </div>
         </div>
+
         <div class="form">
           <h3>ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Планируемый или рассчитанный бюджет*">
-            <input class="form-items__item" type="text" placeholder="Дата предполагаемого запуска*">
-            <input class="form-items__item" type="text" placeholder="Напишите здесь всё, что сочтёте нужным">
-            <input class="form-items__item" type="text" placeholder="Напишите способ связи">
-            <label class="form-items__checkbox">
-              <input type="checkbox" required/>
-              <a>Согласен c политикой конфиденциальности</a>
-            </label>
+            <input v-model="budget" class="form-items__item" type="number" placeholder="Планируемый бюджет*" required />
+            <input v-model="date" class="form-items__item" type="text" placeholder="Дата предполагаемого запуска*" required />
+            <input v-model="additional" class="form-items__item" type="text" placeholder="Дополнительная информация" />
           </div>
         </div>
-        <button class="send">ОТПРАВИТЬ</button>
+
+        <div class="form__checkbox">
+          <input type="checkbox" class="form__checkbox-input" required>
+          <p>Согласен с <a href="/public/Политика конфиденциальности.pdf" target="_blank">политикой конфиденциальности</a></p>
+        </div>
+        <div class="form__checkbox">
+          <input type="checkbox" class="form__checkbox-input" required>
+          <p>Я согласен на обработку<a href="/public/Обработка персональных данных.pdf" target="_blank"> персональных данных</a></p>
+        </div>
+
+        <button class="send" @click="submitBrief">ОТПРАВИТЬ</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.brief {
+  margin-bottom: 2rem;
+}
+
+.button-main {
+  font-weight: 500;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #1b33b2;
+
+  display: flex;
+  align-items: center;
+  column-gap: 0.6rem;
+
+  margin-top: 96px;
+}
+
 .content {
   margin-top: 96px;
   margin-left: 376px;
+}
+
+.form__checkbox {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  margin-top: 1rem;
+
+  p {
+    font-weight: 300;
+    font-size: 1rem;
+
+    a {
+      font-weight: 400;
+      color: #1b33b2;
+    }
+  }
 }
 
 .form {
@@ -128,7 +235,7 @@ import BriefTitle from "@/shared/ui/BriefTitle.vue";
   max-width: 1112px;
   width: 100%;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   color: #1b33b2;
   margin-top: 4rem;

@@ -1,25 +1,28 @@
 <script setup>
 import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
+import ReviewModal from "@/features/modals/ReviewModal.vue";
 </script>
 
 <template>
   <div class="contacts">
-    <MainPageTitle titleTop="свяжитесь" titleBottom="с нами"/>
-    <div class="content">
-      <img class="star" src="@/assets/images/main-star.svg" alt="Star">
-      <div class="items">
-        <div class="item">
-          <p>Почта</p>
-          <h3>september@web.ru</h3>
-        </div>
-        <div class="item">
-          <p>Телефон</p>
-          <h3>+79812345678</h3>
-        </div>
-        <div class="item">
-          <p>Время работы</p>
-          <h3>Пн-Пт 10:00 - 18:00 по МСК
-            Сб, Вс - выходные</h3>
+    <h1>Контакты</h1>
+    <div class="wrapper">
+      <div class="content">
+<!--        <img class="star" src="@/assets/images/main-star.svg" alt="Star">-->
+        <div class="items">
+          <div class="item">
+            <p>Почта</p>
+            <h3>september@web.ru</h3>
+          </div>
+          <div class="item">
+            <p>Телефон</p>
+            <h3>+79812345678</h3>
+          </div>
+          <div class="item">
+            <p>Время работы</p>
+            <h3>Пн-Пт 10:00 - 18:00 по МСК
+              Сб, Вс - выходные</h3>
+          </div>
         </div>
       </div>
     </div>
@@ -27,8 +30,29 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 </template>
 
 <style scoped lang="scss">
+h1 {
+  align-items: start;
+  font-weight: 600;
+  font-size: 200px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.wrapper {
+  max-width: 1488px;
+  //width: 100%;
+  //border: 1px solid red;
+  margin-left: auto;
+
+  h1 {
+    align-items: start;
+    font-weight: 600;
+    font-size: 200px;
+    text-transform: uppercase;
+  }
+}
   .content {
-    margin-top: 240px;
+    margin-top: 4rem;
     display: flex;
     flex-wrap: wrap;
     align-items: end;
@@ -70,6 +94,18 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
   }
 
   @media (max-width: 780px) {
+    .wrapper {
+      //align-items: center;
+      //text-align: center;
+
+      h1 {
+        font-size: 54px;
+      }
+    }
+
+    h1 {
+      font-size: 54px;
+    }
     .content {
       margin-top: 2rem;
       align-items: start;
@@ -92,7 +128,7 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 
       h3 {
         font-weight: 400;
-        font-size: 2rem;
+        font-size: 1.3rem;
         color: #1b33b2;
         max-width: 806px;
       }
@@ -106,6 +142,17 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
   }
 
   @media (max-width: 320px) {
+    .wrapper {
+      //align-items: center;
+      //text-align: center;
 
+      h1 {
+        font-size: 54px;
+      }
+    }
+
+    h1 {
+      font-size: 54px;
+    }
   }
 </style>

@@ -32,6 +32,12 @@ const description = ref(props.description);
     //max-width: 500px;
   }
 
+  @media (max-width: 780px) {
+    .description {
+      display: none;
+    }
+  }
+
   @media (max-width: 320px) {
     .title {
       font-size: 22px;

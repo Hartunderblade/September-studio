@@ -1,7 +1,16 @@
 <script setup>
-import { defineEmits, onMounted, onUnmounted } from 'vue';
+import { defineEmits, onMounted, onUnmounted, ref } from 'vue';
+import axios from 'axios';
 
 const emit = defineEmits(['close']);
+
+const fullName = ref('');
+const phone = ref('');
+const email = ref('');
+const budget = ref('');
+const description = ref('');
+const privacyPolicy = ref(false);
+const isSubmitted = ref(false);
 
 const disableScroll = () => {
   document.body.style.overflow = 'hidden';
@@ -11,6 +20,38 @@ const enableScroll = () => {
   document.body.style.overflow = '';
 };
 
+
+// Функция для отправки данных на сервер
+const submitFeedback = async () => {
+  if (!privacyPolicy.value) {
+    alert('Вы должны согласиться с политикой конфиденциальности.');
+    return;
+  }
+
+  const feedbackData = {
+    full_name: fullName.value,
+    phone: phone.value,
+    email: email.value,
+    budget: budget.value,
+    description: description.value,
+    privacy_policy: privacyPolicy.value,
+  };
+
+  try {
+    const response = await axios.post('http://localhost:3000/user/feedback', feedbackData);
+    console.log('Отзыв успешно отправлен:', response.data);
+    isSubmitted.value = true; // Устанавливаем флаг отправки
+
+    // Показываем сообщение 2 секунды, затем закрываем
+    setTimeout(() => {
+      emit('close');
+    }, 4000);
+
+  } catch (error) {
+    console.error('Ошибка при отправке отзыва:', error);
+    alert('Произошла ошибка при отправке данных. Пожалуйста, попробуйте снова.');
+  }
+};
 
 onMounted(disableScroll);
 onUnmounted(enableScroll);
@@ -25,19 +66,27 @@ onUnmounted(enableScroll);
           Созвонимся, проведём консультацию,
           финальное решение — за вами</p>
       </div>
-      <form class="form">
-        <input type="text" class="form__input" placeholder="Укажите ФИО" required>
-        <input type="tel" class="form__input" placeholder="+7 (999) 999-99-99" required>
-        <input type="email" class="form__input" placeholder="Почта" required>
-        <input style="margin-top: 1rem" type="text" class="form__input" placeholder="Ваш бюджет" required>
-        <textarea placeholder="Опишите задачу" class="form__textarea" required></textarea>
+      <form @submit.prevent="submitFeedback" class="form">
+        <div v-if="isSubmitted" class="success-message">
+          Ваша заявка отправлена, с вами скоро свяжутся!
+        </div>
+        <input v-model="fullName" type="text" class="form__input" placeholder="Укажите ФИО" required>
+        <input v-model="phone" type="tel" class="form__input" placeholder="+7 (999) 999-99-99" required>
+        <input v-model="email" type="email" class="form__input" placeholder="Почта" required>
+        <input v-model="budget" style="margin-top: 1rem" type="text" class="form__input" placeholder="Ваш бюджет" required>
+        <textarea v-model="description" placeholder="Опишите задачу" class="form__textarea" required></textarea>
+        <div class="form__checkbox">
+          <input v-model="privacyPolicy" type="checkbox" class="form__checkbox-input" required>
+          <p>Согласен с <a href="/public/Политика конфиденциальности.pdf" target="_blank">политикой конфиденциальности</a></p>
+        </div>
         <div class="form__checkbox">
           <input type="checkbox" class="form__checkbox-input" required>
-          <p>Согласен с <a href="#">политикой конфиденциальности</a></p>
+          <p>Я согласен на обработку<a href="/public/Обработка персональных данных.pdf" target="_blank"> персональных данных</a></p>
         </div>
+
         <button class="form__send">ОТПРАВИТЬ</button>
       </form>
-      <button @click="emit('close')" class="close">
+      <button @click="emit('close')" type="submit" class="close" >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M22.9999 1.00009L1 23M0.999907 1L22.9998 22.9999" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -47,6 +96,17 @@ onUnmounted(enableScroll);
 </template>
 
 <style scoped lang="scss">
+.success-message {
+  color: #132063;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+//.close {
+//  position: absolute;
+//  top: 4rem;
+//  right: 4rem;
+//}
 .modal-owerlay {
   position: fixed;
   left: 0;
@@ -61,7 +121,7 @@ onUnmounted(enableScroll);
   align-items: center;
   justify-content: center;
   z-index: 20;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .modal {
@@ -73,13 +133,16 @@ onUnmounted(enableScroll);
   border-radius: 1rem;
   display: flex;
   justify-content: space-between;
+  align-items: start;
+  column-gap: 1rem;
   //flex-wrap: wrap;
-  align-items: flex-start;
+  //align-items: flex-start;
   overflow-y: auto;
+  //overflow: hidden;
   }
 
 .info {
-  width: 632px;
+  //width: 632px;
   margin-right: 2rem;
   &__title {
     font-weight: 600;
@@ -167,32 +230,41 @@ onUnmounted(enableScroll);
   }
 }
 
-@media (max-width: 780px) {}
-
-@media (max-width: 320px) {
+@media (max-width: 780px) {
   .modal {
-    border-radius: 6px;
-    padding: 12px;
-    max-width: 296px;
+    position: relative;
+    background-color: #ffffff;
+    padding: 1rem;
+    max-width: 600px;
+    width: 80%;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    //flex-wrap: wrap;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .info__desc {
+    font-size: 1rem;
+    max-width: 400px;
+    margin-bottom: 1rem;
   }
 
   .info {
-    width: 100%;
-    margin-right: 0;
-    te
-    &__title {
-      font-weight: 600;
-      font-size: 20px;
-    }
-
-    &__desc {
-      font-weight: 300;
-      font-size: 12px;
-      color: #2b2b2b;
-      margin-top: 12px;
-
-    }
+    width: 400px;
+    margin-right: 2rem;
   }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: 100%;
+  }
+
+
 
   .form {
     display: flex;
@@ -207,7 +279,7 @@ onUnmounted(enableScroll);
       border: 1px solid rgba(27, 51, 178, 0.4);
       border-radius: 6px;
       padding: 1rem 0 1rem 1rem;
-      max-width: 467px;
+      max-width: 100%;
       background: #fff;
     }
 
@@ -215,7 +287,7 @@ onUnmounted(enableScroll);
       border: 1px solid rgba(27, 51, 178, 0.4);
       border-radius: 6px;
       padding: 16px 0 120px 16px;
-      max-width: 467px;
+      max-width: 100%;
       background: #fff;
       font-weight: 300;
       font-size: 16px;
@@ -250,11 +322,11 @@ onUnmounted(enableScroll);
       border: 1px solid #1b33b2;
       border-radius: 6px;
       padding: 22px 0;
-      max-width: 467px;
+      max-width: 100%;
       font-weight: 500;
       font-size: 18px;
       color: #1b33b2;
-      margin-top: 1rem;
+      margin-top: 0rem;
 
       &:hover {
         background-color: #1b33b2;
@@ -263,5 +335,15 @@ onUnmounted(enableScroll);
       }
     }
   }
+
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+}
+
+@media (max-width: 320px) {
 }
 </style>

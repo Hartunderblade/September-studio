@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 </script>
 
 <template>
@@ -13,7 +16,7 @@ import { ref } from 'vue';
     </div>
     <div style="margin-top: 14.3rem" class="thanks-right">
       <h2 style="font-weight: 500; font-size: 48px; text-transform: uppercase;">посмотрите, чем мы <br> ещё можем быть полезны</h2>
-      <button style="font-weight: 600; font-size: 18px; text-transform: uppercase; color: #1b33b2; display: flex; align-items: center; column-gap: 1rem; margin-top: 2rem;">все услуги
+      <button @click="router.push('/user/projects')" style="font-weight: 600; font-size: 18px; text-transform: uppercase; color: #1b33b2; display: flex; align-items: center; column-gap: 1rem; margin-top: 2rem;">наши проекты
         <svg width="70" height="13" viewBox="0 0 70 13" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 1H70L46.8644 13" stroke="#1B33B2" />
         </svg>

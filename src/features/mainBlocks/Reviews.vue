@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 import ReviewModal from "@/features/modals/ReviewModal.vue";
+import DiscussProjectModals from "@/features/modals/DiscussProjectModals.vue";
 
 const isModalOpen = ref(false);
+const reviews = ref([]);
 
 const openModal = () => {
   isModalOpen.value = true;
@@ -13,29 +16,16 @@ const closeModal = () => {
   isModalOpen.value = false;
 };
 
-const reviews = ref([
-  {
-    name: 'Юрий Маркин',
-    text: 'Недавно я обратился в студию September для редизайна своего сайта, который' +
-        'посвящен транспортным перевозкам. Мы долго искали команду, которая могла бы не только' +
-        'обновить внешний вид сайта, но и улучшить его функциональность. Мы решили внедрить стиль' +
-        'bento grid, который, как мне казалось, будет идеальным решением для организации информации' +
-        'о наших услугах и маршрутах. С самого первого общения меня приятно удивила профессиональность' +
-        'и креативность команды. Они выслушали все мои пожелания и идеи, предложили множество вариантов' +
-        'и концепций, что позволило нам обсудить каждый элемент дизайна. Я вполне доволен результатом' +
-        'работы и с уверенностью могу рекомендовать студию September всем, кто ищет качественный редизайн' +
-        'своего сайта. Это команда настоящих профессионалов, которые понимают нужды клиента и готовы' +
-        'предложить лучшие решения!'
-  },
-  {
-    name: 'Анна Петрова',
-    text: 'Отличная команда, которая помогла мне создать сайт мечты! Очень довольна результатом.'
-  },
-  {
-    name: 'Иван Смирнов',
-    text: 'Быстро, качественно, профессионально. Буду обращаться ещё!'
+const fetchReviews = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/reviews/get');
+    reviews.value = response.data;
+  } catch (error) {
+    console.error('Ошибка при загрузке отзывов:', error);
   }
-]);
+};
+
+
 
 const currentIndex = ref(0);
 
@@ -52,16 +42,15 @@ const prevReview = () => {
 };
 
 console.log(nextReview)
-
+onMounted(fetchReviews);
 </script>
 
 <template>
   <div class="">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-      <MainPageTitle titleTop="отзывы" titleBottom=""/>
+    <h1>Отзывы</h1>
+    <div class="wrapper">
       <button class="link" @click="openModal">Оставить отзыв</button>
     </div>
-
     <div class="content">
       <div class="reviews">
         <div class="review">
@@ -78,9 +67,9 @@ console.log(nextReview)
               <path d="M81 0.5H0.999998L27.4407 8.5" stroke="#1B33B2" />
             </svg>
           </button>
-            <div class="count-num">
-              <p>{{ currentIndex + 1 }}</p> <p>/</p> <p>{{ reviews.length }}</p>
-            </div>
+          <div class="count-num">
+            <p>{{ currentIndex + 1 }}</p> <p>/</p> <p>{{ reviews.length }}</p>
+          </div>
           <button @click="nextReview">
             <svg width="81" height="9" viewBox="0 0 81 9" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 0.5H80L53.5593 8.5" stroke="#1B33B2" />
@@ -95,6 +84,13 @@ console.log(nextReview)
 </template>
 
 <style scoped lang="scss">
+h1 {
+  align-items: start;
+  font-weight: 600;
+  font-size: 280px;
+  line-height: 1;
+  text-transform: uppercase;
+}
   .content {
     margin-top: 10px;
     display: flex;
@@ -106,7 +102,7 @@ console.log(nextReview)
     font-size: 1.2rem;
     text-decoration: underline;
     color: #1B33B2;
-    margin-bottom: 14rem;
+    margin-bottom: 0;
   }
 
   .reviews {
@@ -148,7 +144,26 @@ console.log(nextReview)
     }
   }
 
+
+  @media (max-width: 780px) {
+    h1 {
+      font-size: 54px;
+    }
+    .star {
+      display: none;
+    }
+
+    .link {
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+
+  }
+
   @media (max-width: 320px) {
+    h1 {
+      font-size: 54px;
+    }
     .content {
       margin-top: 10px;
       display: flex;
@@ -193,11 +208,10 @@ console.log(nextReview)
     }
 
     .star {
-      overflow: hidden;
+      display: none;
     }
 
     .link {
-      font-size: 0.8rem;
       margin-bottom: 1rem;
     }
   }

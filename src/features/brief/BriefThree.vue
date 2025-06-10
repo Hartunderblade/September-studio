@@ -1,57 +1,106 @@
 <script setup>
-import { ref } from 'vue';
 import BriefTitle from "@/shared/ui/BriefTitle.vue";
+import { ref } from 'vue'
+import axios from 'axios'
+import {useRouter} from "vue-router";
+import ButtonGoBack from "@/shared/ui/ButtonGoBack.vue";
+
+const router = useRouter();
+
+const name = ref('');
+const phone = ref('');
+const email = ref('');
+
+const url = ref('');
+const description = ref('');
+const deadline = ref('');
+const budget = ref('');
+
+const submitBrief = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    await axios.post(
+        "http://localhost:3000/brief/edit",
+        {
+          name: name.value,
+          phone: phone.value,
+          email: email.value,
+          url: url.value,
+          description: description.value,
+          deadline: deadline.value,
+          budget: budget.value,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${token}`
+          },
+        }
+    );
+    router.push("/user/thanks");
+  } catch (err) {
+    console.error(err);
+    alert("Ошибка при отправке брифа");
+  }
+};
+
 </script>
 
 <template>
   <div class="brief">
     <div class="one">
       <div class="header">
+        <ButtonGoBack/>
         <BriefTitle
-            titleTop="бриф на лого"
-            titleBottom="и фирменный стиль"
-            description="Благодарим, что нашли время заполнить бриф.
-            Помните, максимальноподробно заполненный бриф помогает
-            вам получить сайт (дизайн), которыйсоответствует
-            полностью вашим ожиданиям"/>
+            titleTop="бриф на полную"
+            titleBottom="доработку сайта"
+            description="Благодарим, что нашли время заполнить бриф. Этот бриф поможет проанализировать сайт и помочь качественно выполнить работу"
+        />
       </div>
       <div class="content">
         <div class="form">
           <h3>КОНТАКТНАЯ ИНФОРМАЦИЯ</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Имя">
-            <input class="form-items__item" type="text" placeholder="+7 (999) 999-99-99">
-            <input class="form-items__item" type="text" placeholder="Почта">
-            <input class="form-items__item" type="text" placeholder="Способ связи">
+            <input v-model="name" class="form-items__item" type="text" placeholder="Имя">
+            <input v-model="phone" class="form-items__item" type="tel" placeholder="+7 (999) 999-99-99">
+            <input v-model="email" class="form-items__item" type="email" placeholder="Почта">
           </div>
         </div>
+
         <div class="form">
+          <h3>ИНФОРМАЦИЯ О САЙТЕ И ДОРАБОТКЕ</h3>
           <div class="form-items">
-            <input class="form-items__item" type="text" placeholder="Укажите полный адрес вашего сайта*: https://site.ru ">
-            <input class="form-items__item" type="text" placeholder="Опишите, что необходимо доработать в вашем проекте?*">
-            <input class="form-items__item" type="text" placeholder="Планируемый дедлайн">
-            <input class="form-items__item" type="text" placeholder="Планируемый или рассчитанный бюджет*">
+            <input v-model="url" class="form-items__item" type="text" placeholder="Укажите полный адрес вашего сайта*: https://site.ru">
+            <input v-model="description" class="form-items__item" type="text" placeholder="Опишите, что необходимо доработать в вашем проекте?*">
+            <input v-model="deadline" class="form-items__item" type="text" placeholder="Планируемый дедлайн">
+            <input v-model="budget" class="form-items__item" type="text" placeholder="Планируемый или рассчитанный бюджет*">
           </div>
         </div>
+
         <div class="form">
           <div class="form-items">
             <label class="form-items__checkbox">
-              <input type="checkbox" required/>
-              <a>Согласен c политикой конфиденциальности</a>
+              <input type="checkbox" required />
+              <a href="/public/Политика конфиденциальности.pdf" target="_blank">Согласен c политикой конфиденциальности</a>
             </label>
           </div>
         </div>
-        <button class="send">ОТПРАВИТЬ</button>
+
+        <button class="send" @click="submitBrief">ОТПРАВИТЬ</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.brief {
+  margin-bottom: 2rem;
+}
 .content {
   margin-top: 96px;
   margin-left: 376px;
 }
+
 
 .form {
   margin-top: 4rem;
@@ -106,7 +155,7 @@ import BriefTitle from "@/shared/ui/BriefTitle.vue";
   max-width: 1112px;
   width: 100%;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   color: #1b33b2;
   margin-top: 4rem;

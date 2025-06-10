@@ -21,9 +21,9 @@ const emit = defineEmits(["close"]);
       и поможет перейти к более детальному обсуждению" />
       <button @click="emit('close')" class="modal__close"><img src="@/assets/icons/close-modal.svg" alt="Закрыть"></button>
       <div class="modal-buttons">
-        <button @click="router.push(`/user/briefOne`)">бриф на дизайн сайта<img src="@/assets/icons/arrow-modal.png"></button>
-        <button @click="router.push(`/user/briefTwo`)">бриф на лого и фирменный стиль<img src="@/assets/icons/arrow-modal.png"></button>
-        <button @click="router.push(`/user/BriefThree`)">Бриф на доработку сайта<img src="@/assets/icons/arrow-modal.png"></button>
+        <button @click="router.push(`/user/briefTwo`)">бриф на дизайн сайта<img class="arrow" src="@/assets/icons/arrow-modal.png"></button>
+        <button @click="router.push(`/user/briefOne`)">бриф на лого и фирменный стиль<img class="arrow" src="@/assets/icons/arrow-modal.png"></button>
+        <button @click="router.push(`/user/BriefThree`)">Бриф на доработку сайта<img class="arrow" src="@/assets/icons/arrow-modal.png"></button>
       </div>
     </div>
   </div>
@@ -79,12 +79,10 @@ const emit = defineEmits(["close"]);
 
 @media (max-width: 780px) {
   .modal {
-    position: relative;
-    background-color: #ffffff;
-    padding: 4rem;
-    max-width: 1163px;
-    width: 100%;
-    border-radius: 1rem;
+    padding: 1rem;
+    max-width: 900px;
+    margin: 2rem;
+    width: 80%;
 
     &-buttons {
       margin-top: 3rem;
@@ -92,24 +90,20 @@ const emit = defineEmits(["close"]);
       flex-direction: column;
       row-gap: 2rem;
       button {
-        font-weight: 300;
-        font-size: 28px;
-        text-transform: uppercase;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        border-bottom: 1px solid #1b33b2;
-        padding-bottom: 0.8rem;
-        cursor: pointer;
+        font-size: 16px;
+        align-items: start;
       }
     }
 
     &__close {
       position: absolute;
-      right: 4rem;
-      top: 4rem;
+      right: 1rem;
+      top: 12px;
     }
+  }
+
+  .arrow {
+    display: none;
   }
 }
 
@@ -138,6 +132,10 @@ const emit = defineEmits(["close"]);
       right: 2rem;
       top: 1rem;
     }
+  }
+
+  .arrow {
+    display: none;
   }
 }
 </style>

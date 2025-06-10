@@ -16,11 +16,11 @@ import Footer from "@/features/footer/Footer.vue";
 </template>
 
 <style scoped lang="scss">
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+//.wrapper {
+//  display: flex;
+//  flex-direction: column;
+//  min-height: 100vh;
+//}
 
 .content {
   flex: 1;

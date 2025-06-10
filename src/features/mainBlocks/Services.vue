@@ -16,7 +16,10 @@ const closeModal = () => {
 
 <template>
   <div class="about">
-    <MainPageTitle titleTop="наши" titleBottom="услуги"/>
+    <h1>Наши</h1>
+    <div class="wrapper">
+      <h1 class="">услуги</h1>
+    </div>
     <div class="content">
       <div class="items">
         <div class="item">
@@ -89,8 +92,32 @@ const closeModal = () => {
 </template>
 
 <style scoped lang="scss">
+
+
+h1 {
+  align-items: start;
+  font-weight: 600;
+  font-size: 200px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.wrapper {
+  max-width: 1488px;
+  //width: 100%;
+  //border: 1px solid red;
+  margin-left: auto;
+
+  h1 {
+    align-items: start;
+    font-weight: 600;
+    font-size: 200px;
+    text-transform: uppercase;
+  }
+}
+
   .content {
-    margin-top: 240px;
+    margin-top: 4rem;
   }
 
   .items {
@@ -143,9 +170,55 @@ const closeModal = () => {
     }
   }
 
+@media (max-width: 780px) {
+  .wrapper {
+    //align-items: center;
+    //text-align: center;
+
+    h1 {
+      font-size: 54px;
+    }
+  }
+
+  h1 {
+    font-size: 54px;
+  }
+
+  .content {
+    margin-top: 3rem;
+  }
+
+  .item {
+    background-color: #fff;
+    border: 1px solid #132063;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    max-width: 540px;
+  }
+
+  .item__button {
+    text-align: start;
+    font-size: 1.4rem;
+  }
+}
+
   @media (max-width: 320px) {
+
+    .wrapper {
+      //align-items: center;
+      //text-align: center;
+
+      h1 {
+        font-size: 54px;
+      }
+    }
+
+    h1 {
+      font-size: 54px;
+    }
+
     .content {
-      margin-top: 10rem;
+      margin-top: 3rem;
     }
 
     .items {

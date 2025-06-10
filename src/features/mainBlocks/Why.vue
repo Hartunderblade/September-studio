@@ -4,8 +4,9 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 
 <template>
   <div class="why">
-    <MainPageTitle titleTop="почему" titleBottom="мы?"/>
-    <div class="content">
+    <h1>Почему</h1>
+    <div class="wrapper">
+      <h1 class="">мы?</h1>
       <div class="items">
         <div class="item">
           <img src="@/assets/images/main-star.svg" alt="Studio september icon">
@@ -54,6 +55,28 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 </template>
 
 <style scoped lang="scss">
+h1 {
+  align-items: start;
+  font-weight: 600;
+  font-size: 200px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.wrapper {
+  max-width: 1488px;
+  //width: 100%;
+  //border: 1px solid red;
+  margin-left: auto;
+
+  h1 {
+    align-items: start;
+    font-weight: 600;
+    font-size: 200px;
+    text-transform: uppercase;
+  }
+}
+
   .content {
     margin-top: 240px;
     margin-left: 376px;
@@ -65,10 +88,11 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
     display: flex;
     flex-direction: column;
     row-gap: 4rem;
+    margin-top: 4rem;
   }
 
   .item {
-    display: flex;
+    //display: flex;
     align-items: start;
     column-gap: 2rem;
     flex-wrap: wrap;
@@ -98,6 +122,24 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
   }
 
   @media (max-width: 780px) {
+    .wrapper {
+      //align-items: center;
+      //text-align: center;
+
+      h1 {
+        font-size: 54px;
+      }
+    }
+
+    h1 {
+      font-size: 54px;
+    }
+
+    .items {
+      margin-top: 3rem;
+      row-gap: 2rem;
+    }
+
     .content {
       margin-top: 0;
       margin-left: 0;
@@ -116,6 +158,7 @@ import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
 
     .items {
       row-gap: 1rem;
+      margin-top: 2rem;
     }
 
     .item {

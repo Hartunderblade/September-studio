@@ -1,7 +1,13 @@
 <script setup>
-import { defineEmits, onMounted, onUnmounted } from 'vue';
+import { defineEmits, onMounted, onUnmounted, ref } from 'vue';
+import axios from 'axios';
 
 const emit = defineEmits(['close']);
+const isLoading = ref(false);
+const formData = ref({
+  name: '',
+  text: ''
+});
 
 const disableScroll = () => {
   document.body.style.overflow = 'hidden';
@@ -9,6 +15,52 @@ const disableScroll = () => {
 
 const enableScroll = () => {
   document.body.style.overflow = '';
+};
+
+const submitReview = async (e) => {
+  e.preventDefault();
+
+  // Проверка заполнения полей
+  if (!formData.value.name.trim() || !formData.value.text.trim()) {
+    alert('Пожалуйста, заполните все поля');
+    return;
+  }
+
+  isLoading.value = true;
+
+  try {
+    const response = await axios.post('http://localhost:3000/reviews', formData.value, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    // Очищаем форму после успешной отправки
+    formData.value = { name: '', text: '' };
+    emit('close');
+    alert('Спасибо! Ваш отзыв успешно отправлен.');
+  } catch (error) {
+    console.error('Ошибка при отправке отзыва:', error);
+
+    let errorMessage = 'Произошла ошибка при отправке отзыва';
+    if (error.response) {
+      // Ошибка от сервера
+      if (error.response.status === 400) {
+        errorMessage = 'Некорректные данные';
+      } else if (error.response.status === 401) {
+        errorMessage = 'Требуется авторизация';
+      } else if (error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+    } else if (error.request) {
+      // Запрос был сделан, но ответ не получен
+      errorMessage = 'Сервер не отвечает. Попробуйте позже.';
+    }
+
+    alert(errorMessage);
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 onMounted(disableScroll);
@@ -23,10 +75,28 @@ onUnmounted(enableScroll);
         <p class="info__desc">Оставляя отзыв, вы даёте нам понять насколько
           качественно была выполнена работа</p>
       </div>
-      <form class="form">
-        <input type="text" class="form__input" placeholder="Укажите имя" required>
-        <textarea placeholder="Напишите отзыв" class="form__textarea" required></textarea>
-        <button @click="emit('close')" class="form__send">ОТПРАВИТЬ</button>
+      <form class="form" @submit.prevent="submitReview">
+        <input
+            type="text"
+            class="form__input"
+            placeholder="Укажите имя"
+            required
+            v-model.trim="formData.name"
+        >
+        <textarea
+            placeholder="Напишите отзыв"
+            class="form__textarea"
+            required
+            v-model.trim="formData.text"
+        ></textarea>
+        <button
+            type="submit"
+            class="form__send"
+            :disabled="isLoading"
+        >
+          <span v-if="!isLoading">ОТПРАВИТЬ</span>
+          <span v-else>ОТПРАВКА...</span>
+        </button>
       </form>
       <button class="close" @click="emit('close')">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,5 +224,36 @@ onUnmounted(enableScroll);
       transition: 0.6s;
     }
   }
+}
+
+@media (max-width: 780px) {
+  .modal {
+    position: relative;
+    background-color: #ffffff;
+    padding: 1rem;
+    max-width: 1000px;
+    width: 80%;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .info {
+    &__desc {
+      margin-bottom: 10px;
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
 }
 </style>

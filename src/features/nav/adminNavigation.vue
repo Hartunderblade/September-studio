@@ -1,9 +1,21 @@
 <script setup>
 import '@/assets/styles/mainPage.scss';
 import {RouterLink} from "vue-router";
+import { useRouter } from 'vue-router';
 import {ref} from "vue";
 
 const isMenuOpen = ref(false);
+
+const router = useRouter();
+
+const logout = () => {
+  // Очистить данные о пользователе из localStorage
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+
+  // Перенаправить на страницу входа
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -30,13 +42,13 @@ const isMenuOpen = ref(false);
         <div class="nav-links__container">
           <RouterLink class="navbar__link" to="/admin" @click="isMenuOpen = false">Пользователи</RouterLink>
           <RouterLink class="navbar__link" to="/admin/orders" @click="isMenuOpen = false">Заявки</RouterLink>
-          <RouterLink class="navbar__link" to="/admin/reviews" @click="isMenuOpen = false">Отзывы</RouterLink>
+<!--          <RouterLink class="navbar__link" to="/admin/reviews" @click="isMenuOpen = false">Отзывы</RouterLink>-->
           <RouterLink class="navbar__link" to="/admin/feedback" @click="isMenuOpen = false">Связь</RouterLink>
         </div>
       </div>
       <div class="user">
         <p class="user__name">Админ</p>
-        <button type="submit" class="user__logout">Выйти <img src="@/assets/icons/arrow-logout.svg"></button>
+        <button @click="logout" type="submit" class="user__logout">Выйти <img src="@/assets/icons/arrow-logout.svg"></button>
       </div>
     </div>
   </nav>

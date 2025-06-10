@@ -1,69 +1,42 @@
 <script setup>
-import { ref, onMounted } from "vue";
 import MainPageTitle from "@/shared/ui/MainPageTitle.vue";
+import DiscussProjectModals from "@/features/modals/DiscussProjectModals.vue";
+import {ref, onMounted, onBeforeUnmount} from "vue";
 
-const slides = ref([
-  {
-    title: "Брифинг и ТЗ",
-    text: "Определяем цели и задачи сайта, изучаем целевую аудиторию, анализируем конкурентов и состовляем подробное техническое задание, подбираем референсы"
-  },
-  {
-    title: "Договор и предоплата",
-    text: "Подписываем договор. Отправляем вам таблицу с указанием дат для каждого этапа работы. Внесение предоплаты 50%"
-  },
-  {
-    title: "Разработка дизайна",
-    text: "Презентуем готовый дизайн главной страницы сайта, представляем своё видение и аргументируем решения. После согласования доделываем остальные страницы"
-  },
-  {
-    title: "Верстка и анимация",
-    text: "Верстаем готовый дизайн сайта, собираем страницы, адаптируем под все разрешения и добавляем анимацию"
-  },
-  {
-    title: "Презентация проекта",
-    text: "Презентуем готовый проект, описываем каждое своё решение, демонстрируем дизайн на различных носителях для наглядности"
-  },
-  {
-    title: "Утверждение и передача",
-    text: "Финальное утверждение и внесение оставшейся суммы. Подключаем домен и выкладываем сайт на сервер, сдаём проект"
-  }
-]);
+import slideImage from '@/assets/images/slide.png'
 
-const slidesPerPage = 3; // Количество слайдов на одной странице
-const currentIndex = ref(0);
-
-const nextSlide = () => {
-  currentIndex.value = (currentIndex.value + 1) % Math.ceil(slides.value.length / slidesPerPage);
-};
-
-const prevSlide = () => {
-  currentIndex.value = (currentIndex.value - 1 + Math.ceil(slides.value.length / slidesPerPage)) % Math.ceil(slides.value.length / slidesPerPage);
-};
+const scrollPosition = ref(0)
+let interval = null
 
 onMounted(() => {
-  setInterval(nextSlide, 5000); // Автопрокрутка каждые 5 секунд
-});
+  interval = setInterval(() => {
+    scrollPosition.value += 1
+    // Если вся картинка прокрутилась — сброс позиции
+    const imageWidth = 2000 // замените на реальную ширину изображения в пикселях
+    const containerWidth = 800 // ширина контейнера (см. CSS ниже)
+    if (scrollPosition.value > imageWidth - containerWidth) {
+      scrollPosition.value = 0
+    }
+  }, 20) // скорость прокрутки (меньше значение — быстрее)
+})
 
-const getCurrentSlides = () => {
-  const start = currentIndex.value * slidesPerPage;
-  return slides.value.slice(start, start + slidesPerPage);
-};
+onBeforeUnmount(() => {
+  clearInterval(interval)
+})
+
 </script>
 
 <template>
-  <div class="step">
-    <MainPageTitle titleTop="этапы" titleBottom="работы" />
+  <div class="about">
+    <h1>Этапы</h1>
+    <div class="wrapper">
+      <h1 class="">работы</h1>
+    </div>
     <div class="content">
-      <div class="slider-container">
-        <div class="line"></div>
-        <div class="slides-wrapper">
-          <div class="slides">
-            <div v-for="(slide, index) in getCurrentSlides()" :key="index" class="slide">
-              <img class="star" src="@/assets/images/main-star.svg">
-              <p class="slide__title">{{ slide.title }}</p>
-              <p class="slide__desc">{{ slide.text }}</p>
-            </div>
-          </div>
+
+      <div style="overflow: hidden;" class="slider-container">
+        <div class="slider-track" :style="{ transform: `translateX(-${scrollPosition}px)` }">
+          <img :src="slideImage" alt="Слайд" />
         </div>
       </div>
     </div>
@@ -71,88 +44,174 @@ const getCurrentSlides = () => {
 </template>
 
 <style scoped lang="scss">
-.content {
-  margin-top: 260px;
-}
 
-.slider-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
 
-.line {
-  width: 100%;
-  height: 2px;
-  background: #1B33B2;
-  position: relative;
-  margin-bottom: 2rem;
-}
-
-.slides-wrapper {
-  display: flex;
-  //align-items: center;
-  //justify-content: center;
-  position: relative;
-}
-
-.slides {
-  display: flex;
-  column-gap: 5.2rem;
-  transition: transform 0.8s ease-in-out;
-}
-
-.slide {
-  display: flex;
-  flex-direction: column;
+h1 {
   align-items: start;
+  font-weight: 600;
+  font-size: 200px;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-.slide__title {
-  font-weight: 500;
-  font-size: 2rem;
-  margin-top: 1.6rem;
+.wrapper {
+  max-width: 1488px;
+  //width: 100%;
+  //border: 1px solid red;
+  margin-left: auto;
+
+  h1 {
+    align-items: start;
+    font-weight: 600;
+    font-size: 200px;
+    text-transform: uppercase;
+  }
 }
 
-.slide__desc {
-  font-weight: 300;
-  font-size: 1.4rem;
-  max-width: 480px;
-  margin-top: 1rem;
+.content {
+  margin-top: 4rem;
 }
 
-.star {
-  position: absolute;
-  top: -66px;
-  color: #1B33B2;
-  font-size: 20px;
-  width: 68px;
-  height: 68px;
-  z-index: 10;
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-button {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 20;
+.item {
+  background-color: #fff;
+  border: 1px solid #132063;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  max-width: 540px;
+
+  img {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  &__title {
+    font-weight: 400;
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  &__desc {
+    font-weight: 300;
+    font-size: 22px;
+    max-width: 531px;
+    margin-top: 1rem;
+  }
+
+  &__price {
+    font-weight: 400;
+    font-size: 28px;
+    margin-top: 3rem;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 300;
+    font-size: 26px;
+    text-transform: uppercase;
+    margin-top: 40px;
+    width: 100%;
+  }
 }
 
-.prev {
-  left: 10px;
-}
+@media (max-width: 780px) {
+  .wrapper {
+    //align-items: center;
+    //text-align: center;
 
-.next {
-  right: 10px;
+    h1 {
+      font-size: 54px;
+    }
+  }
+
+  h1 {
+    font-size: 54px;
+  }
+
+  .content {
+    margin-top: 3rem;
+  }
+
+  .item {
+    background-color: #fff;
+    border: 1px solid #132063;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    max-width: 540px;
+  }
+
+  .item__button {
+    text-align: start;
+    font-size: 1.4rem;
+  }
 }
 
 @media (max-width: 320px) {
-  .step {
-    overflow: hidden;
+
+  .wrapper {
+    //align-items: center;
+    //text-align: center;
+
+    h1 {
+      font-size: 54px;
+    }
+  }
+
+  h1 {
+    font-size: 54px;
+  }
+
+  .content {
+    margin-top: 3rem;
+  }
+
+  .items {
+    gap: 1rem;
+    text-align: start;
+  }
+
+  .item {
+    padding: 1rem;
+    border-radius: 0.2rem;
+    max-width: 297px;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    &__title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    &__desc {
+      font-size: 12px;
+      max-width: 290px;
+      margin-top: 1rem;
+    }
+
+    &__price {
+      font-size: 22px;
+      margin-top: 22px;
+    }
+
+    &__button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-top: 26px;
+      text-align: start;
+    }
   }
 }
 </style>

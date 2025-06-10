@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from "vue-router";
+import axios from 'axios';
+import CapchaModal from "@/features/modals/CapchaModal.vue";
 
 const router = useRouter();
 
@@ -8,64 +10,187 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 const repeatPassword = ref('');
-const chek = ref('');
+const agreement = ref(false);
+
+const errorMessage = ref('');
+const showCaptcha = ref(false);
+
+const fieldErrors = ref({
+  name: '',
+  email: '',
+  password: '',
+  repeatPassword: '',
+  agreement: ''
+});
+
+// Лайв-валидация через watch
+watch(name, val => {
+  fieldErrors.value.name = val ? '' : 'Введите имя';
+});
+watch(email, val => {
+  fieldErrors.value.email = val ? '' : 'Введите email';
+});
+watch(password, val => {
+  fieldErrors.value.password = val.length >= 8 ? '' : 'Пароль должен быть не менее 8 символов';
+  fieldErrors.value.repeatPassword =
+      repeatPassword.value === val && repeatPassword.value
+          ? ''
+          : 'Пароли не совпадают';
+});
+watch(repeatPassword, val => {
+  fieldErrors.value.repeatPassword =
+      val === password.value && val
+          ? ''
+          : 'Пароли не совпадают';
+});
+watch(agreement, val => {
+  fieldErrors.value.agreement = val ? '' : 'Необходимо согласие';
+});
+
+const validateForm = () => {
+  fieldErrors.value.name = name.value ? '' : 'Введите имя';
+  fieldErrors.value.email = email.value ? '' : 'Введите email';
+  fieldErrors.value.password = password.value.length >= 8 ? '' : 'Пароль должен быть не менее 8 символов';
+  fieldErrors.value.repeatPassword =
+      repeatPassword.value === password.value && repeatPassword.value
+          ? ''
+          : 'Пароли не совпадают';
+  fieldErrors.value.agreement = agreement.value ? '' : 'Необходимо согласие';
+
+  const hasErrors = Object.values(fieldErrors.value).some(msg => msg !== '');
+  if (hasErrors) {
+    errorMessage.value = 'Исправьте ошибки в форме';
+    return false;
+  }
+
+  errorMessage.value = '';
+  return true;
+};
+
+const register = async () => {
+  try {
+    const response = await axios.post("http://localhost:3000/auth/register", {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      confirmPassword: repeatPassword.value,
+      agreement: Boolean(agreement.value)
+    });
+
+    if (response.status < 300) {
+      router.push('/login');
+    }
+  } catch (error) {
+    errorMessage.value = error.response?.data?.message || "Ошибка при регистрации";
+  }
+};
+
+const onCaptchaSuccess = () => {
+  showCaptcha.value = false;
+  register();
+};
+
+const onSubmit = () => {
+  if (validateForm()) {
+    showCaptcha.value = true;
+  }
+};
 </script>
 
 <template>
   <div class="auth">
+    <CapchaModal v-if="showCaptcha" @success="onCaptchaSuccess" @close="showCaptcha = false" />
     <div class="auth__container">
       <div class="auth-form">
         <img src="@/assets/images/logo.svg" alt="Logo" class="auth-form__logo" />
         <h2 class="auth-form__title">Добро пожаловать!</h2>
         <p class="auth-form__text">Для начала работы создайте новый аккаунт</p>
-        <form @submit.prevent="router.push('/')">
+        <form @submit.prevent="onSubmit">
           <input
               type="text"
               v-model="name"
               placeholder="ФИО полностью"
               class="auth__input"
+              :class="{ 'input-error': fieldErrors.name }"
               required
           />
+          <p v-if="fieldErrors.name" class="error-field-message">{{ fieldErrors.name }}</p>
+
           <input
               type="email"
               v-model="email"
               placeholder="Почта"
               class="auth__input"
+              :class="{ 'input-error': fieldErrors.email }"
               required
           />
+          <p v-if="fieldErrors.email" class="error-field-message">{{ fieldErrors.email }}</p>
+
           <input
               type="password"
               v-model="password"
               placeholder="Пароль"
               class="auth__input"
+              :class="{ 'input-error': fieldErrors.password }"
               required
           />
+          <p v-if="fieldErrors.password" class="error-field-message">{{ fieldErrors.password }}</p>
+
           <input
               type="password"
               v-model="repeatPassword"
               placeholder="Повторить пароль"
               class="auth__input"
+              :class="{ 'input-error': fieldErrors.repeatPassword }"
               required
           />
-          <div class="form-chek">
-            <input type="checkbox" v-model="chek" required>
-            <span>Я принимаю условия политики конфиденциальности и даю согласие
-на обработку персональных данных</span>
+          <p v-if="fieldErrors.repeatPassword" class="error-field-message">{{ fieldErrors.repeatPassword }}</p>
+
+          <div class="form-chek" :class="{ 'checkbox-error': fieldErrors.agreement }">
+            <input type="checkbox" v-model="agreement" />
+            <p>
+              Я принимаю
+              <a style="color: #132063;" href="/Политика конфиденциальности.pdf" target="_blank" rel="noopener noreferrer">
+                условия политики конфиденциальности
+              </a> и даю согласие на обработку персональных данных
+            </p>
           </div>
+          <p v-if="fieldErrors.agreement" class="error-field-message">{{ fieldErrors.agreement }}</p>
+
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+
           <button type="submit" class="button">Зарегистрироваться</button>
         </form>
+
         <p class="auth-form__register">
           Ещё нет аккаунта? <a @click="router.push('/login')">Войти</a>
         </p>
       </div>
       <div class="auth__graphic"></div>
     </div>
-
   </div>
-
 </template>
 
 <style scoped lang="scss">
+.input-error {
+  border: 1px solid red;
+}
+
+.checkbox-error input {
+  outline: 2px solid red;
+}
+
+.error-field-message {
+  color: red;
+  font-size: 12px;
+  margin: 4px 0 8px 4px;
+}
+
+.error-message {
+  color: darkred;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
 .auth {
   display: flex;
   align-items: center;
@@ -214,7 +339,7 @@ const chek = ref('');
   .auth-form {
     padding: 1.5rem;
     width: 100%;
-    max-width: 100%;
+    max-width: 90%;
   }
 }
 

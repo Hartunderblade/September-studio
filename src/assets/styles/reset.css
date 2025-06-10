@@ -23,6 +23,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
+
 ol, ul {
     list-style: none;
 }
@@ -30,6 +31,7 @@ ol, ul {
 a {
     text-decoration: none;
     color: black;
+    cursor: pointer;
 }
 button {
     border: none;
@@ -49,7 +51,6 @@ input {
 
 
 body {
-    min-height: 100vh;
     transition:
             color 0.5s,
             background-color 0.5s;
@@ -89,3 +90,4 @@ button {
 footer button {
     color: white;
 }
+

@@ -27,4 +27,26 @@ import { ref } from 'vue';
       margin-top: 1rem;
     }
   }
+
+  @media (max-width: 780px) {
+    .add {
+      max-width: unset;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 320px) {
+    .add {
+      border-radius: 6px;
+      padding: 0;
+      max-width: 140px;
+      width: 100%;
+      height: 113px;
+
+      p {
+        font-size: 10px;
+        margin-top: 6px;
+      }
+    }
+  }
 </style>
